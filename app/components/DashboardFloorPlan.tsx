@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 import { rooms } from "@/app/lib/mock-data";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -56,6 +57,7 @@ function getStatusDimColor(status: string): string {
 
 export default function DashboardFloorPlan() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   return (
     <div className="glass p-4 mb-5">
@@ -66,10 +68,10 @@ export default function DashboardFloorPlan() {
       >
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-text-secondary">
-            Grundriss
+            {t("dashboard.floorplanLive")}
           </span>
           <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-accent-dim text-accent font-semibold">
-            Live
+            {t("dashboard.live")}
           </span>
         </div>
         <ChevronRight size={16} className="text-text-tertiary" />
@@ -103,7 +105,7 @@ export default function DashboardFloorPlan() {
                 fontWeight="700"
                 letterSpacing="0.5"
               >
-                {fc.label}
+                {fc.floor === 1 ? t("floorplan.eg") : t("floorplan.og")}
               </text>
 
               {/* Hallway */}
@@ -233,28 +235,28 @@ export default function DashboardFloorPlan() {
             className="w-2 h-2 rounded-full"
             style={{ background: "var(--danger)" }}
           />
-          <span className="text-[9px] text-text-tertiary">Alarm</span>
+          <span className="text-[9px] text-text-tertiary">{t("status.alarm")}</span>
         </div>
         <div className="flex items-center gap-1">
           <span
             className="w-2 h-2 rounded-full"
             style={{ background: "var(--warning)" }}
           />
-          <span className="text-[9px] text-text-tertiary">Warnung</span>
+          <span className="text-[9px] text-text-tertiary">{t("status.warning")}</span>
         </div>
         <div className="flex items-center gap-1">
           <span
             className="w-2 h-2 rounded-full"
             style={{ background: "var(--accent)" }}
           />
-          <span className="text-[9px] text-text-tertiary">Normal</span>
+          <span className="text-[9px] text-text-tertiary">{t("status.normal")}</span>
         </div>
         <div className="flex items-center gap-1">
           <span
             className="w-2 h-2 rounded-full"
             style={{ background: "var(--offline)" }}
           />
-          <span className="text-[9px] text-text-tertiary">Offline</span>
+          <span className="text-[9px] text-text-tertiary">{t("status.offline")}</span>
         </div>
       </div>
     </div>

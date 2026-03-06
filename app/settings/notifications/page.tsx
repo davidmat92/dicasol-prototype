@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 import {
   ArrowLeft,
   Bell,
@@ -82,6 +83,7 @@ function Slider({ value, min, max, unit, onChange }: SliderProps) {
 
 export default function NotificationsPage() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   // Channels
   const [pushEnabled, setPushEnabled] = useState(true);
@@ -112,6 +114,74 @@ export default function NotificationsPage() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [vibrationEnabled, setVibrationEnabled] = useState(true);
 
+  const alarmTypes = [
+    {
+      icon: AlertTriangle,
+      label: t("notif.fall"),
+      color: "text-danger",
+      bg: "var(--danger-dim)",
+      enabled: sturzEnabled,
+      toggle: () => setSturzEnabled(!sturzEnabled),
+    },
+    {
+      icon: Flame,
+      label: t("notif.smoke"),
+      color: "text-danger",
+      bg: "var(--danger-dim)",
+      enabled: rauchEnabled,
+      toggle: () => setRauchEnabled(!rauchEnabled),
+    },
+    {
+      icon: Thermometer,
+      label: t("notif.tempWarning"),
+      color: "text-warning",
+      bg: "var(--warning-dim)",
+      enabled: tempEnabled,
+      toggle: () => setTempEnabled(!tempEnabled),
+    },
+    {
+      icon: DoorOpen,
+      label: t("notif.doorWindow"),
+      color: "text-warning",
+      bg: "var(--warning-dim)",
+      enabled: tuerEnabled,
+      toggle: () => setTuerEnabled(!tuerEnabled),
+    },
+    {
+      icon: Activity,
+      label: t("notif.motion"),
+      color: "text-info",
+      bg: "var(--info-dim)",
+      enabled: bewegungEnabled,
+      toggle: () => setBewegungEnabled(!bewegungEnabled),
+    },
+    {
+      icon: Wind,
+      label: t("notif.airQuality"),
+      color: "text-info",
+      bg: "var(--info-dim)",
+      enabled: luftEnabled,
+      toggle: () => setLuftEnabled(!luftEnabled),
+    },
+    {
+      icon: MapPin,
+      label: t("notif.gps"),
+      color: "text-accent",
+      bg: "var(--accent-dim)",
+      enabled: gpsEnabled,
+      toggle: () => setGpsEnabled(!gpsEnabled),
+    },
+    {
+      icon: Droplets,
+      label: t("notif.humidity"),
+      color: "text-accent",
+      bg: "var(--accent-dim)",
+      enabled: feuchtigkeitEnabled,
+      toggle: () =>
+        setFeuchtigkeitEnabled(!feuchtigkeitEnabled),
+    },
+  ];
+
   return (
     <div className="px-4 py-5 animate-fade-in">
       <button
@@ -119,7 +189,7 @@ export default function NotificationsPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       <div className="flex items-center gap-3 mb-6">
@@ -131,17 +201,17 @@ export default function NotificationsPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-text-primary tracking-tight">
-            Benachrichtigungen
+            {t("notif.title")}
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">
-            Alarme & Kanaleinstellungen
+            {t("notif.subtitle")}
           </p>
         </div>
       </div>
 
       {/* Channels */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Benachrichtigungskanaele
+        {t("notif.channels")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-6">
         <div className="flex items-center justify-between p-4">
@@ -154,9 +224,9 @@ export default function NotificationsPage() {
             </div>
             <div>
               <p className="text-sm font-medium text-text-primary">
-                Push-Benachrichtigungen
+                {t("notif.push")}
               </p>
-              <p className="text-xs text-text-tertiary">Sofort auf dem Handy</p>
+              <p className="text-xs text-text-tertiary">{t("notif.pushDesc")}</p>
             </div>
           </div>
           <ToggleSwitch
@@ -173,9 +243,9 @@ export default function NotificationsPage() {
               <MessageSquare size={18} className="text-warning" />
             </div>
             <div>
-              <p className="text-sm font-medium text-text-primary">SMS</p>
+              <p className="text-sm font-medium text-text-primary">{t("notif.sms")}</p>
               <p className="text-xs text-text-tertiary">
-                Bei kritischen Alarmen
+                {t("notif.smsDesc")}
               </p>
             </div>
           </div>
@@ -194,7 +264,7 @@ export default function NotificationsPage() {
             </div>
             <div>
               <p className="text-sm font-medium text-text-primary">E-Mail</p>
-              <p className="text-xs text-text-tertiary">Tagesberichte</p>
+              <p className="text-xs text-text-tertiary">{t("notif.emailDesc")}</p>
             </div>
           </div>
           <ToggleSwitch
@@ -206,76 +276,10 @@ export default function NotificationsPage() {
 
       {/* Alarm types */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Alarmtypen
+        {t("notif.alarmTypes")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-6">
-        {[
-          {
-            icon: AlertTriangle,
-            label: "Sturzerkennung",
-            color: "text-danger",
-            bg: "var(--danger-dim)",
-            enabled: sturzEnabled,
-            toggle: () => setSturzEnabled(!sturzEnabled),
-          },
-          {
-            icon: Flame,
-            label: "Rauchmelder",
-            color: "text-danger",
-            bg: "var(--danger-dim)",
-            enabled: rauchEnabled,
-            toggle: () => setRauchEnabled(!rauchEnabled),
-          },
-          {
-            icon: Thermometer,
-            label: "Temperaturwarnung",
-            color: "text-warning",
-            bg: "var(--warning-dim)",
-            enabled: tempEnabled,
-            toggle: () => setTempEnabled(!tempEnabled),
-          },
-          {
-            icon: DoorOpen,
-            label: "Tuer-/Fensteralarm",
-            color: "text-warning",
-            bg: "var(--warning-dim)",
-            enabled: tuerEnabled,
-            toggle: () => setTuerEnabled(!tuerEnabled),
-          },
-          {
-            icon: Activity,
-            label: "Bewegungsmelder",
-            color: "text-info",
-            bg: "var(--info-dim)",
-            enabled: bewegungEnabled,
-            toggle: () => setBewegungEnabled(!bewegungEnabled),
-          },
-          {
-            icon: Wind,
-            label: "Luftqualitaet",
-            color: "text-info",
-            bg: "var(--info-dim)",
-            enabled: luftEnabled,
-            toggle: () => setLuftEnabled(!luftEnabled),
-          },
-          {
-            icon: MapPin,
-            label: "GPS-Tracking",
-            color: "text-accent",
-            bg: "var(--accent-dim)",
-            enabled: gpsEnabled,
-            toggle: () => setGpsEnabled(!gpsEnabled),
-          },
-          {
-            icon: Droplets,
-            label: "Feuchtigkeit",
-            color: "text-accent",
-            bg: "var(--accent-dim)",
-            enabled: feuchtigkeitEnabled,
-            toggle: () =>
-              setFeuchtigkeitEnabled(!feuchtigkeitEnabled),
-          },
-        ].map((item, i) => {
+        {alarmTypes.map((item, i) => {
           const Icon = item.icon;
           return (
             <div key={i} className="flex items-center justify-between p-4">
@@ -296,13 +300,13 @@ export default function NotificationsPage() {
 
       {/* Thresholds */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Schwellenwerte
+        {t("notif.thresholds")}
       </h3>
       <div className="glass p-4 space-y-5 mb-6">
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-text-primary">
-              Temperatur-Warnung
+              {t("notif.tempThreshold")}
             </span>
           </div>
           <Slider
@@ -316,7 +320,7 @@ export default function NotificationsPage() {
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-text-primary">
-              Feuchtigkeit-Warnung
+              {t("notif.humidityThreshold")}
             </span>
           </div>
           <Slider
@@ -330,7 +334,7 @@ export default function NotificationsPage() {
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-text-primary">
-              Keine Bewegung seit
+              {t("notif.noMotion")}
             </span>
           </div>
           <Slider
@@ -345,7 +349,7 @@ export default function NotificationsPage() {
 
       {/* Quiet mode */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Ruhemodus
+        {t("notif.quietMode")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-6">
         <div className="flex items-center justify-between p-4">
@@ -358,10 +362,10 @@ export default function NotificationsPage() {
             </div>
             <div>
               <p className="text-sm font-medium text-text-primary">
-                Ruhemodus
+                {t("notif.quietMode")}
               </p>
               <p className="text-xs text-text-tertiary">
-                Nur kritische Alarme
+                {t("notif.quietOnly")}
               </p>
             </div>
           </div>
@@ -373,15 +377,13 @@ export default function NotificationsPage() {
         {quietMode && (
           <div className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-text-secondary">Zeitraum</span>
+              <span className="text-sm text-text-secondary">{t("notif.quietPeriod")}</span>
               <span className="text-sm font-semibold text-accent">
                 {quietFrom} - {quietTo}
               </span>
             </div>
             <p className="text-xs text-text-tertiary mt-2">
-              Waehrend des Ruhemodus werden nur Sturz- und Rauchalarme
-              weitergeleitet. Alle anderen Benachrichtigungen werden stumm
-              geschaltet.
+              {t("notif.quietHint")}
             </p>
           </div>
         )}
@@ -389,13 +391,13 @@ export default function NotificationsPage() {
 
       {/* Sound & Vibration */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Ton & Vibration
+        {t("notif.soundVibration")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-6">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
             <Volume2 size={18} className="text-text-secondary" />
-            <span className="text-sm text-text-primary">Alarmsound</span>
+            <span className="text-sm text-text-primary">{t("settings.alarmSound")}</span>
           </div>
           <ToggleSwitch
             enabled={soundEnabled}
@@ -405,7 +407,7 @@ export default function NotificationsPage() {
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
             <Smartphone size={18} className="text-text-secondary" />
-            <span className="text-sm text-text-primary">Vibration</span>
+            <span className="text-sm text-text-primary">{t("settings.vibration")}</span>
           </div>
           <ToggleSwitch
             enabled={vibrationEnabled}

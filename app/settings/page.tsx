@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useAuth } from "@/app/context/AuthContext";
+import { useLanguage } from "@/app/context/LanguageContext";
 import Modal from "@/app/components/Modal";
 import {
   Bell,
@@ -97,6 +98,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const { logout } = useAuth();
+  const { t, locale } = useLanguage();
   const [pushEnabled, setPushEnabled] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [vibration, setVibration] = useState(true);
@@ -112,7 +114,7 @@ export default function SettingsPage() {
   return (
     <div className="px-4 py-5 animate-fade-in">
       <h1 className="text-[22px] font-bold text-text-primary tracking-tight mb-5">
-        Einstellungen
+        {t("settings.title")}
       </h1>
 
       {/* Profile Card */}
@@ -136,10 +138,10 @@ export default function SettingsPage() {
               Maria Schneider
             </h2>
             <p className="text-xs text-text-secondary mt-0.5">
-              Pflegefachkraft &middot; Nachmittagsschicht
+              {t("settings.nurseRole")}
             </p>
             <p className="text-xs text-accent font-medium mt-0.5">
-              Seniorenheim Sonnenschein
+              {t("settings.facilityName")}
             </p>
           </div>
           <ChevronRight size={18} className="text-text-tertiary" />
@@ -148,22 +150,22 @@ export default function SettingsPage() {
 
       {/* Notifications */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Benachrichtigungen
+        {t("settings.notifications")}
       </h3>
       <div className="glass mb-6 divide-y divide-border overflow-hidden">
         <SettingRow
           icon={<Bell size={18} className="text-accent" />}
           iconBg="var(--accent-dim)"
-          title="Push-Benachrichtigungen"
-          subtitle="Sofortige Alarme erhalten"
+          title={t("settings.push")}
+          subtitle={t("settings.pushDesc")}
           right={chevron}
           onClick={() => router.push("/settings/notifications")}
         />
         <SettingRow
           icon={<Volume2 size={18} className="text-warning" />}
           iconBg="var(--warning-dim)"
-          title="Alarmsound"
-          subtitle="Akustische Signale bei Alarmen"
+          title={t("settings.alarmSound")}
+          subtitle={t("settings.alarmSoundDesc")}
           right={
             <ToggleSwitch
               enabled={soundEnabled}
@@ -174,8 +176,8 @@ export default function SettingsPage() {
         <SettingRow
           icon={<Smartphone size={18} className="text-info" />}
           iconBg="var(--info-dim)"
-          title="Vibration"
-          subtitle="Vibrationsalarm bei Ereignissen"
+          title={t("settings.vibration")}
+          subtitle={t("settings.vibrationDesc")}
           right={
             <ToggleSwitch
               enabled={vibration}
@@ -187,14 +189,14 @@ export default function SettingsPage() {
 
       {/* Display */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Darstellung
+        {t("settings.display")}
       </h3>
       <div className="glass mb-6 divide-y divide-border overflow-hidden">
         <SettingRow
           icon={<Globe size={18} className="text-info" />}
           iconBg="var(--info-dim)"
-          title="Sprache"
-          subtitle="Deutsch"
+          title={t("settings.language")}
+          subtitle={locale === "de" ? "Deutsch" : locale === "en" ? "English" : "Polski"}
           right={chevron}
           onClick={() => router.push("/settings/language")}
         />
@@ -207,9 +209,9 @@ export default function SettingsPage() {
             )
           }
           iconBg={isDark ? "var(--bg-elevated)" : "var(--warning-dim)"}
-          title={isDark ? "Dunkelmodus" : "Hellmodus"}
+          title={isDark ? t("settings.darkMode") : t("settings.lightMode")}
           subtitle={
-            isDark ? "Augenschonende Darstellung" : "Helle Darstellung"
+            isDark ? t("settings.darkModeDesc") : t("settings.lightModeDesc")
           }
           right={
             <ToggleSwitch enabled={isDark} onToggle={toggleTheme} />
@@ -219,29 +221,29 @@ export default function SettingsPage() {
 
       {/* System */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        System
+        {t("settings.system")}
       </h3>
       <div className="glass mb-6 divide-y divide-border overflow-hidden">
         <SettingRow
           icon={<Building2 size={18} className="text-accent" />}
           iconBg="var(--accent-dim)"
-          title="Einrichtung"
-          subtitle="Seniorenheim Sonnenschein"
+          title={t("settings.facility")}
+          subtitle={t("settings.facilityName")}
           right={chevron}
           onClick={() => router.push("/settings/facility")}
         />
         <SettingRow
           icon={<Users size={18} className="text-info" />}
           iconBg="var(--info-dim)"
-          title="Benutzerverwaltung"
-          subtitle="8 Mitarbeiter"
+          title={t("settings.userMgmt")}
+          subtitle={t("settings.employees")}
           right={chevron}
           onClick={() => router.push("/admin/users")}
         />
         <SettingRow
           icon={<Calendar size={18} className="text-warning" />}
           iconBg="var(--warning-dim)"
-          title="Schichtplan"
+          title={t("settings.shiftPlan")}
           subtitle="KW 10"
           right={chevron}
           onClick={() => router.push("/admin/schedule")}
@@ -249,23 +251,23 @@ export default function SettingsPage() {
         <SettingRow
           icon={<Shield size={18} className="text-accent" />}
           iconBg="var(--success-dim)"
-          title="Datenschutz"
-          subtitle="DSGVO-konform"
+          title={t("settings.privacy")}
+          subtitle={t("settings.privacyDesc")}
           right={chevron}
           onClick={() => router.push("/settings/privacy")}
         />
         <SettingRow
           icon={<HelpCircle size={18} className="text-text-secondary" />}
           iconBg="var(--bg-elevated)"
-          title="Hilfe & Support"
+          title={t("settings.help")}
           right={chevron}
           onClick={() => router.push("/settings/help")}
         />
         <SettingRow
           icon={<Info size={18} className="text-text-secondary" />}
           iconBg="var(--bg-elevated)"
-          title="Ueber DICASOL"
-          subtitle="Version 3.0.0"
+          title={t("settings.about")}
+          subtitle={t("settings.version")}
           right={chevron}
           onClick={() => router.push("/settings/about")}
         />
@@ -277,19 +279,19 @@ export default function SettingsPage() {
         className="w-full flex items-center justify-center gap-2 text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98] mb-6 bg-danger-dim text-danger border border-danger/20"
       >
         <LogOut size={18} />
-        Abmelden
+        {t("settings.logout")}
       </button>
 
       {/* Version info */}
       <p className="text-center text-[11px] text-text-tertiary mb-4">
-        DICASOL UG &middot; Version 3.0.0 &middot; Maerz 2026
+        {t("settings.footer")}
       </p>
 
       {/* Logout Confirmation Modal */}
       <Modal
         open={showLogout}
         onClose={() => setShowLogout(false)}
-        title="Abmelden"
+        title={t("settings.logout")}
       >
         <div className="text-center mb-6">
           <div
@@ -299,8 +301,7 @@ export default function SettingsPage() {
             <LogOut size={28} className="text-danger" />
           </div>
           <p className="text-sm text-text-secondary leading-relaxed">
-            Moechten Sie sich wirklich abmelden? Sie erhalten dann keine
-            Push-Benachrichtigungen mehr, bis Sie sich erneut anmelden.
+            {t("settings.logoutConfirm")}
           </p>
         </div>
         <div className="space-y-2">
@@ -312,7 +313,7 @@ export default function SettingsPage() {
             className="w-full flex items-center justify-center gap-2 bg-danger text-white text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98]"
           >
             <LogOut size={16} />
-            Ja, abmelden
+            {t("settings.logoutYes")}
           </button>
           <button
             onClick={() => setShowLogout(false)}
@@ -322,7 +323,7 @@ export default function SettingsPage() {
               color: "var(--text-primary)",
             }}
           >
-            Abbrechen
+            {t("common.cancel")}
           </button>
         </div>
       </Modal>
@@ -331,7 +332,7 @@ export default function SettingsPage() {
       <Modal
         open={showProfile}
         onClose={() => setShowProfile(false)}
-        title="Profil"
+        title={t("settings.profile")}
       >
         <div className="text-center mb-6">
           <div className="relative inline-block mb-3">
@@ -362,14 +363,14 @@ export default function SettingsPage() {
           <div className="flex items-center gap-3 p-4">
             <User size={18} className="text-text-tertiary" />
             <div className="flex-1">
-              <p className="text-[11px] text-text-tertiary">Name</p>
+              <p className="text-[11px] text-text-tertiary">{t("common.name")}</p>
               <p className="text-sm text-text-primary">Maria Schneider</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
             <Mail size={18} className="text-text-tertiary" />
             <div className="flex-1">
-              <p className="text-[11px] text-text-tertiary">E-Mail</p>
+              <p className="text-[11px] text-text-tertiary">{t("common.email")}</p>
               <p className="text-sm text-text-primary">
                 m.schneider@sonnenschein.de
               </p>
@@ -378,14 +379,14 @@ export default function SettingsPage() {
           <div className="flex items-center gap-3 p-4">
             <Phone size={18} className="text-text-tertiary" />
             <div className="flex-1">
-              <p className="text-[11px] text-text-tertiary">Telefon</p>
+              <p className="text-[11px] text-text-tertiary">{t("common.phone")}</p>
               <p className="text-sm text-text-primary">+49 241 1234567</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
             <Building2 size={18} className="text-text-tertiary" />
             <div className="flex-1">
-              <p className="text-[11px] text-text-tertiary">Einrichtung</p>
+              <p className="text-[11px] text-text-tertiary">{t("settings.facility")}</p>
               <p className="text-sm text-text-primary">
                 Seniorenheim Sonnenschein
               </p>

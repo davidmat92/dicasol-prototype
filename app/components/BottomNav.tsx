@@ -4,17 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Bell, Clock, Settings } from "lucide-react";
 import { getOpenAlerts } from "@/app/lib/mock-data";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/alerts", label: "Alarme", icon: Bell, showBadge: true },
-  { href: "/history", label: "Verlauf", icon: Clock },
-  { href: "/settings", label: "Einstellungen", icon: Settings },
+  { href: "/", labelKey: "nav.dashboard", icon: LayoutDashboard },
+  { href: "/alerts", labelKey: "nav.alarms", icon: Bell, showBadge: true },
+  { href: "/history", labelKey: "nav.history", icon: Clock },
+  { href: "/settings", labelKey: "nav.settings", icon: Settings },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
   const openCount = getOpenAlerts().length;
+  const { t } = useLanguage();
 
   return (
     <nav
@@ -67,7 +69,7 @@ export default function BottomNav() {
                     : "text-text-tertiary font-medium"
                 }`}
               >
-                {item.label}
+                {t(item.labelKey)}
               </span>
             </Link>
           );

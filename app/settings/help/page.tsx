@@ -13,6 +13,7 @@ import {
   BookOpen,
   Video,
 } from "lucide-react";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 const faqs = [
   {
@@ -39,6 +40,7 @@ const faqs = [
 
 export default function HelpPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
@@ -48,7 +50,7 @@ export default function HelpPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       <div className="flex items-center gap-3 mb-6">
@@ -60,17 +62,17 @@ export default function HelpPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-text-primary tracking-tight">
-            Hilfe & Support
+            {t("help.title")}
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">
-            Wir helfen Ihnen gerne weiter
+            {t("help.subtitle")}
           </p>
         </div>
       </div>
 
       {/* Quick actions */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Kontakt
+        {t("help.contact")}
       </h3>
       <div className="grid grid-cols-2 gap-2 mb-6">
         <button className="glass p-4 text-center transition-all active:scale-[0.98]">
@@ -80,9 +82,9 @@ export default function HelpPage() {
           >
             <Phone size={20} className="text-accent" />
           </div>
-          <p className="text-sm font-semibold text-text-primary">Anrufen</p>
+          <p className="text-sm font-semibold text-text-primary">{t("help.call")}</p>
           <p className="text-[11px] text-text-tertiary mt-0.5">
-            Mo-Fr 8-18 Uhr
+            {t("help.callHours")}
           </p>
         </button>
         <button className="glass p-4 text-center transition-all active:scale-[0.98]">
@@ -92,7 +94,7 @@ export default function HelpPage() {
           >
             <Mail size={20} className="text-info" />
           </div>
-          <p className="text-sm font-semibold text-text-primary">E-Mail</p>
+          <p className="text-sm font-semibold text-text-primary">{t("common.email")}</p>
           <p className="text-[11px] text-text-tertiary mt-0.5">
             support@dicasol.de
           </p>
@@ -104,9 +106,9 @@ export default function HelpPage() {
           >
             <MessageCircle size={20} className="text-warning" />
           </div>
-          <p className="text-sm font-semibold text-text-primary">Live-Chat</p>
+          <p className="text-sm font-semibold text-text-primary">{t("help.liveChat")}</p>
           <p className="text-[11px] text-text-tertiary mt-0.5">
-            Sofort verfuegbar
+            {t("help.liveChatDesc")}
           </p>
         </button>
         <button className="glass p-4 text-center transition-all active:scale-[0.98]">
@@ -116,16 +118,16 @@ export default function HelpPage() {
           >
             <Video size={20} className="text-text-secondary" />
           </div>
-          <p className="text-sm font-semibold text-text-primary">Tutorials</p>
+          <p className="text-sm font-semibold text-text-primary">{t("help.tutorials")}</p>
           <p className="text-[11px] text-text-tertiary mt-0.5">
-            Video-Anleitungen
+            {t("help.videoGuides")}
           </p>
         </button>
       </div>
 
       {/* Resources */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Ressourcen
+        {t("help.resources")}
       </h3>
       <div className="glass mb-6 divide-y divide-border overflow-hidden">
         <div className="flex items-center gap-3 p-4">
@@ -137,10 +139,10 @@ export default function HelpPage() {
           </div>
           <div className="flex-1">
             <p className="text-sm font-medium text-text-primary">
-              Benutzerhandbuch
+              {t("help.manual")}
             </p>
             <p className="text-xs text-text-tertiary mt-0.5">
-              Vollstaendige Dokumentation
+              {t("help.manualDesc")}
             </p>
           </div>
         </div>
@@ -148,7 +150,7 @@ export default function HelpPage() {
 
       {/* FAQ */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Haeufige Fragen
+        {t("help.faq")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-6">
         {faqs.map((faq, i) => (

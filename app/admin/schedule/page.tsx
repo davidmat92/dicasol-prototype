@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 import {
   shiftSchedule,
   staffMembers,
@@ -19,36 +20,37 @@ import {
   Users,
 } from "lucide-react";
 
-const shiftConfig = {
-  frueh: {
-    label: "Frueh",
-    time: "06:00 - 14:00",
-    icon: Sun,
-    color: "var(--warning)",
-    bg: "var(--warning-dim)",
-  },
-  spaet: {
-    label: "Spaet",
-    time: "14:00 - 22:00",
-    icon: Sunset,
-    color: "var(--info)",
-    bg: "var(--info-dim)",
-  },
-  nacht: {
-    label: "Nacht",
-    time: "22:00 - 06:00",
-    icon: Moon,
-    color: "var(--text-tertiary)",
-    bg: "var(--bg-elevated)",
-  },
-};
-
 export default function SchedulePage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [selectedShift, setSelectedShift] = useState<
     "frueh" | "spaet" | "nacht" | null
   >(null);
+
+  const shiftConfig = {
+    frueh: {
+      label: t("admin.schedule.early"),
+      time: t("admin.schedule.earlyTime"),
+      icon: Sun,
+      color: "var(--warning)",
+      bg: "var(--warning-dim)",
+    },
+    spaet: {
+      label: t("admin.schedule.late"),
+      time: t("admin.schedule.lateTime"),
+      icon: Sunset,
+      color: "var(--info)",
+      bg: "var(--info-dim)",
+    },
+    nacht: {
+      label: t("admin.schedule.night"),
+      time: t("admin.schedule.nightTime"),
+      icon: Moon,
+      color: "var(--text-tertiary)",
+      bg: "var(--bg-elevated)",
+    },
+  };
 
   const todayIndex = 1; // Tuesday (04.03.)
 
@@ -71,7 +73,7 @@ export default function SchedulePage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       <div className="flex items-center gap-3 mb-5">
@@ -83,7 +85,7 @@ export default function SchedulePage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-text-primary tracking-tight">
-            Schichtplan
+            {t("admin.schedule.title")}
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">
             KW 10 · 03. - 09. Maerz 2026
@@ -127,7 +129,7 @@ export default function SchedulePage() {
         >
           <div className="p-2.5">
             <span className="text-[10px] font-bold text-text-tertiary">
-              TAG
+              {t("admin.schedule.day")}
             </span>
           </div>
           {(["frueh", "spaet", "nacht"] as const).map((shift) => {
@@ -259,8 +261,8 @@ export default function SchedulePage() {
         }}
         title={
           selectedEntry && selectedShift
-            ? `${selectedEntry.day} - ${shiftConfig[selectedShift].label}schicht`
-            : "Schicht-Details"
+            ? `${selectedEntry.day} - ${shiftConfig[selectedShift].label}${t("admin.schedule.shift")}`
+            : t("admin.schedule.details")
         }
       >
         {selectedEntry && selectedShift && (
@@ -283,7 +285,7 @@ export default function SchedulePage() {
                   className="text-sm font-bold"
                   style={{ color: shiftConfig[selectedShift].color }}
                 >
-                  {shiftConfig[selectedShift].label}schicht
+                  {shiftConfig[selectedShift].label}{t("admin.schedule.shift")}
                 </p>
                 <p className="text-xs text-text-secondary">
                   {selectedEntry.day}, {selectedEntry.date} ·{" "}
@@ -293,7 +295,7 @@ export default function SchedulePage() {
             </div>
 
             <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">
-              Zugeteiltes Personal ({selectedShiftStaff.length})
+              {t("admin.schedule.assignedStaff")} ({selectedShiftStaff.length})
             </h3>
             <div className="glass divide-y divide-border overflow-hidden">
               {selectedShiftStaff.map((staff) => {

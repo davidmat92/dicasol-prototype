@@ -5,10 +5,12 @@ import { historyEvents } from "@/app/lib/mock-data";
 import SensorIcon from "@/app/components/SensorIcon";
 import { Clock } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 type DateFilter = "heute" | "woche" | "monat";
 
 export default function HistoryPage() {
+  const { t } = useLanguage();
   const [dateFilter, setDateFilter] = useState<DateFilter>("heute");
 
   // Filter events based on selected period
@@ -30,9 +32,9 @@ export default function HistoryPage() {
   );
 
   const dateLabels: Record<DateFilter, string> = {
-    heute: "Heute",
-    woche: "Woche",
-    monat: "Monat",
+    heute: t("common.today"),
+    woche: t("common.week"),
+    monat: t("common.month"),
   };
 
   const severityDot: Record<string, string> = {
@@ -52,10 +54,10 @@ export default function HistoryPage() {
       {/* Header */}
       <div className="mb-5">
         <h1 className="text-[22px] font-bold text-text-primary tracking-tight">
-          Verlauf
+          {t("history.title")}
         </h1>
         <p className="text-sm text-text-secondary mt-0.5">
-          {filteredEvents.length} Ereignisse
+          {filteredEvents.length} {t("history.events")}
         </p>
       </div>
 
@@ -90,7 +92,7 @@ export default function HistoryPage() {
               </span>
               <div className="flex-1 h-px bg-border" />
               <span className="text-[11px] text-text-tertiary">
-                {events.length} Ereignisse
+                {events.length} {t("history.events")}
               </span>
             </div>
 
@@ -185,7 +187,7 @@ export default function HistoryPage() {
             <Clock size={28} className="text-text-tertiary" />
           </div>
           <p className="text-sm font-medium text-text-secondary">
-            Keine Ereignisse in diesem Zeitraum
+            {t("history.noEvents")}
           </p>
         </div>
       )}

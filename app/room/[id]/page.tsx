@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getRoomById, getHistoryByRoom, getSensorAnalytics } from "@/app/lib/mock-data";
+import { useLanguage } from "@/app/context/LanguageContext";
 import StatusBadge from "@/app/components/StatusBadge";
 import SensorIcon from "@/app/components/SensorIcon";
 import Sparkline from "@/app/components/Sparkline";
@@ -34,6 +35,7 @@ export default function RoomDetail() {
   const params = useParams();
   const router = useRouter();
   const room = getRoomById(params.id as string);
+  const { t } = useLanguage();
 
   const [showCallModal, setShowCallModal] = useState(false);
   const [showCarePlan, setShowCarePlan] = useState(false);
@@ -43,7 +45,7 @@ export default function RoomDetail() {
   if (!room) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-text-secondary">Raum nicht gefunden</p>
+        <p className="text-text-secondary">{t("room.notFound")}</p>
       </div>
     );
   }
@@ -98,43 +100,43 @@ export default function RoomDetail() {
     {
       icon: Pill,
       time: "08:00",
-      title: "Medikamentenausgabe",
-      desc: "Blutdrucksenker, Schmerzmittel",
+      title: t("room.medication"),
+      desc: t("room.medicationDesc"),
       done: true,
     },
     {
       icon: Utensils,
       time: "12:00",
-      title: "Mittagessen",
-      desc: "Diaetische Kost, pueriert",
+      title: t("room.lunch"),
+      desc: t("room.lunchDesc"),
       done: true,
     },
     {
       icon: Activity,
       time: "14:00",
-      title: "Vitalzeichenkontrolle",
-      desc: "Blutdruck, Puls, Temperatur",
+      title: t("room.vitalCheck"),
+      desc: t("room.vitalCheckDesc"),
       done: false,
     },
     {
       icon: Droplets,
       time: "15:00",
-      title: "Koerperpflege",
-      desc: "Teilwaschung, Hautpflege",
+      title: t("room.bodyCare"),
+      desc: t("room.bodyCareDesc"),
       done: false,
     },
     {
       icon: Pill,
       time: "18:00",
-      title: "Medikamentenausgabe",
-      desc: "Abendmedikation",
+      title: t("room.medication"),
+      desc: t("room.eveningMed"),
       done: false,
     },
     {
       icon: Moon,
       time: "20:00",
-      title: "Bettruhe",
-      desc: "Lagerung, Nachtmedikation",
+      title: t("room.bedrest"),
+      desc: t("room.bedrestDesc"),
       done: false,
     },
   ];
@@ -149,7 +151,7 @@ export default function RoomDetail() {
             className="flex items-center gap-1.5 text-text-secondary text-sm transition-colors active:text-text-primary"
           >
             <ArrowLeft size={18} />
-            Zurueck
+            {t("common.back")}
           </button>
 
           {/* Room notification toggle */}
@@ -197,7 +199,7 @@ export default function RoomDetail() {
                 {room.resident.name}
               </h2>
               <p className="text-xs text-text-secondary mt-0.5">
-                {room.resident.age} Jahre &middot; Pflegegrad{" "}
+                {room.resident.age} {t("room.yearsGrade")}{" "}
                 {room.resident.careLevel}
               </p>
               {room.resident.notes && (
@@ -213,7 +215,7 @@ export default function RoomDetail() {
               className="flex-1 flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold py-3 rounded-2xl transition-all active:scale-[0.98]"
             >
               <Phone size={16} />
-              Anrufen
+              {t("room.call")}
             </button>
             <button
               onClick={() => setShowCarePlan(true)}
@@ -224,14 +226,14 @@ export default function RoomDetail() {
               }}
             >
               <Heart size={16} />
-              Pflegeplan
+              {t("room.carePlan")}
             </button>
           </div>
         </div>
 
         {/* Sensors Grid */}
         <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-          Sensoren ({room.sensors.length})
+          {t("room.sensors")} ({room.sensors.length})
         </h3>
         <div className="grid grid-cols-2 gap-2 mb-5">
           {room.sensors.map((sensor) => {
@@ -295,12 +297,12 @@ export default function RoomDetail() {
 
         {/* Event Timeline */}
         <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-          Letzte Ereignisse
+          {t("room.lastEvents")}
         </h3>
         <div className="glass p-4 mb-6">
           {history.length === 0 ? (
             <p className="text-sm text-text-tertiary text-center py-4">
-              Keine Ereignisse
+              {t("room.noEvents")}
             </p>
           ) : (
             <div className="space-y-0">
@@ -368,7 +370,7 @@ export default function RoomDetail() {
       <Modal
         open={showCallModal}
         onClose={() => setShowCallModal(false)}
-        title="Anrufen"
+        title={t("room.call")}
       >
         <div className="space-y-3">
           <button
@@ -383,10 +385,10 @@ export default function RoomDetail() {
             </div>
             <div className="flex-1 text-left">
               <p className="text-sm font-semibold text-text-primary">
-                Zimmer anrufen
+                {t("room.callRoom")}
               </p>
               <p className="text-xs text-text-secondary mt-0.5">
-                {room.name} - Sprechanlage
+                {room.name} - {t("room.intercom")}
               </p>
             </div>
           </button>
@@ -403,10 +405,10 @@ export default function RoomDetail() {
             </div>
             <div className="flex-1 text-left">
               <p className="text-sm font-semibold text-text-primary">
-                Notfallkontakt
+                {t("room.emergencyContact")}
               </p>
               <p className="text-xs text-text-secondary mt-0.5">
-                Angehoerige: +49 170 1234567
+                {t("room.relative")} +49 170 1234567
               </p>
             </div>
           </button>
@@ -423,7 +425,7 @@ export default function RoomDetail() {
             </div>
             <div className="flex-1 text-left">
               <p className="text-sm font-semibold text-text-primary">
-                Dienstarzt
+                {t("room.dutyDoctor")}
               </p>
               <p className="text-xs text-text-secondary mt-0.5">
                 Dr. Mueller: +49 241 9876543
@@ -443,10 +445,10 @@ export default function RoomDetail() {
             </div>
             <div className="flex-1 text-left">
               <p className="text-sm font-semibold text-text-primary">
-                Pflegestation
+                {t("room.nurseStation")}
               </p>
               <p className="text-xs text-text-secondary mt-0.5">
-                Station EG: +49 241 5551234
+                {t("room.stationEG")} +49 241 5551234
               </p>
             </div>
           </button>
@@ -457,11 +459,11 @@ export default function RoomDetail() {
       <Modal
         open={showCarePlan}
         onClose={() => setShowCarePlan(false)}
-        title={`Pflegeplan - ${room.resident.name}`}
+        title={`${t("room.carePlanTitle")} - ${room.resident.name}`}
       >
         <div className="flex items-center gap-2 mb-5">
           <span className="text-xs font-semibold text-accent px-2.5 py-1 rounded-lg bg-accent-dim">
-            Pflegegrad {room.resident.careLevel}
+            {t("room.careGrade")} {room.resident.careLevel}
           </span>
           {room.resident.notes && (
             <span className="text-xs text-text-tertiary">
@@ -471,7 +473,7 @@ export default function RoomDetail() {
         </div>
 
         <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-          Heutige Massnahmen
+          {t("room.todayMeasures")}
         </h3>
         <div className="space-y-2 mb-5">
           {carePlanItems.map((item, i) => {
@@ -524,7 +526,7 @@ export default function RoomDetail() {
         <div className="glass p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-text-primary font-medium">
-              Fortschritt heute
+              {t("room.progressToday")}
             </span>
             <span className="text-sm font-semibold text-accent">
               {carePlanItems.filter((i) => i.done).length}/
@@ -600,7 +602,7 @@ export default function RoomDetail() {
                   </span>
                 </p>
                 <p className="text-[10px] text-text-tertiary font-medium">
-                  Minimum
+                  {t("room.minimum")}
                 </p>
               </div>
               <div className="glass p-3 text-center">
@@ -612,7 +614,7 @@ export default function RoomDetail() {
                   </span>
                 </p>
                 <p className="text-[10px] text-text-tertiary font-medium">
-                  Durchschnitt
+                  {t("room.average")}
                 </p>
               </div>
               <div className="glass p-3 text-center">
@@ -624,7 +626,7 @@ export default function RoomDetail() {
                   </span>
                 </p>
                 <p className="text-[10px] text-text-tertiary font-medium">
-                  Maximum
+                  {t("room.maximum")}
                 </p>
               </div>
             </div>
@@ -632,7 +634,7 @@ export default function RoomDetail() {
             {/* 24h Analytics Chart with Threshold Zones */}
             <div className="glass p-4 mb-4">
               <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-                Verlauf (24 Stunden)
+                {t("room.history24h")}
               </p>
               <SensorAnalyticsChart
                 data={sensorAnalytics.history24h}
@@ -677,7 +679,7 @@ export default function RoomDetail() {
             {/* Sensor Details */}
             <div className="glass divide-y divide-border overflow-hidden mb-4">
               <div className="flex items-center justify-between p-3.5">
-                <span className="text-xs text-text-secondary">Typ</span>
+                <span className="text-xs text-text-secondary">{t("room.type")}</span>
                 <span className="text-xs text-text-primary capitalize font-medium">
                   {selectedSensor.type}
                 </span>
@@ -687,25 +689,25 @@ export default function RoomDetail() {
                 <StatusBadge status={selectedSensor.status} />
               </div>
               <div className="flex items-center justify-between p-3.5">
-                <span className="text-xs text-text-secondary">Sensor-ID</span>
+                <span className="text-xs text-text-secondary">{t("room.sensorId")}</span>
                 <span className="text-[11px] text-text-tertiary font-mono">
                   {selectedSensor.id}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3.5">
-                <span className="text-xs text-text-secondary">Letzte Messung</span>
-                <span className="text-xs text-text-primary font-medium">Jetzt</span>
+                <span className="text-xs text-text-secondary">{t("room.lastReading")}</span>
+                <span className="text-xs text-text-primary font-medium">{t("room.now")}</span>
               </div>
             </div>
 
             {/* Sensor Health */}
             <h4 className="text-[10px] font-bold text-text-secondary uppercase tracking-wider mb-2">
-              Sensor-Gesundheit
+              {t("room.sensorHealth")}
             </h4>
             <div className="glass divide-y divide-border overflow-hidden mb-4">
               <div className="flex items-center gap-3 p-3.5">
                 <Wifi size={14} className="text-accent shrink-0" />
-                <span className="text-xs text-text-secondary flex-1">Signalstaerke</span>
+                <span className="text-xs text-text-secondary flex-1">{t("room.signalStrength")}</span>
                 <div className="flex items-center gap-2">
                   <div
                     className="w-16 h-1.5 rounded-full overflow-hidden"
@@ -723,7 +725,7 @@ export default function RoomDetail() {
               </div>
               <div className="flex items-center gap-3 p-3.5">
                 <Battery size={14} className="text-accent shrink-0" />
-                <span className="text-xs text-text-secondary flex-1">Batterie</span>
+                <span className="text-xs text-text-secondary flex-1">{t("room.battery")}</span>
                 <div className="flex items-center gap-2">
                   <div
                     className="w-16 h-1.5 rounded-full overflow-hidden"
@@ -747,7 +749,7 @@ export default function RoomDetail() {
               </div>
               <div className="flex items-center gap-3 p-3.5">
                 <Wrench size={14} className="text-text-tertiary shrink-0" />
-                <span className="text-xs text-text-secondary flex-1">Letzte Kalibrierung</span>
+                <span className="text-xs text-text-secondary flex-1">{t("room.lastCalibration")}</span>
                 <span className="text-[11px] text-text-primary font-medium">
                   {sensorAnalytics.lastCalibration}
                 </span>
@@ -763,7 +765,7 @@ export default function RoomDetail() {
               }}
             >
               <Settings size={16} />
-              Sensor kalibrieren
+              {t("room.calibrate")}
             </button>
           </>
         )}

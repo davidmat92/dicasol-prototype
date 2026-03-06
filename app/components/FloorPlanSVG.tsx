@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { rooms, type Room } from "@/app/lib/mock-data";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 interface FloorPlanSVGProps {
   floor: number;
@@ -51,25 +52,26 @@ function getStatusDimColor(status: string): string {
   }
 }
 
-function getStatusLabel(status: string): string {
-  switch (status) {
-    case "alarm":
-      return "ALARM";
-    case "warnung":
-      return "Warnung";
-    case "offline":
-      return "Offline";
-    default:
-      return "Normal";
-  }
-}
-
 export default function FloorPlanSVG({ floor }: FloorPlanSVGProps) {
   const router = useRouter();
+  const { t } = useLanguage();
   const layout = floorLayouts[floor] || [];
 
   const getRoomData = (roomId: string): Room | undefined => {
     return rooms.find((r) => r.id === roomId);
+  };
+
+  const getStatusLabel = (status: string): string => {
+    switch (status) {
+      case "alarm":
+        return t("status.alarm").toUpperCase();
+      case "warnung":
+        return t("status.warning");
+      case "offline":
+        return t("status.offline");
+      default:
+        return t("status.normal");
+    }
   };
 
   return (
@@ -101,7 +103,7 @@ export default function FloorPlanSVG({ floor }: FloorPlanSVGProps) {
         fontWeight="600"
         letterSpacing="1"
       >
-        {floor === 1 ? "ERDGESCHOSS" : "1. OBERGESCHOSS"}
+        {floor === 1 ? t("floorplan.ground").toUpperCase() : t("floorplan.upper").toUpperCase()}
       </text>
 
       {/* Hallway */}
@@ -122,7 +124,7 @@ export default function FloorPlanSVG({ floor }: FloorPlanSVGProps) {
         fontSize="9"
         fontWeight="500"
       >
-        FLUR
+        {t("floorplan.hallway")}
       </text>
 
       {/* Rooms */}
@@ -244,7 +246,7 @@ export default function FloorPlanSVG({ floor }: FloorPlanSVGProps) {
               fill="var(--text-tertiary)"
               fontSize="9"
             >
-              {room.sensors.length} Sensoren
+              {room.sensors.length} {t("common.sensors")}
             </text>
           </g>
         );
@@ -269,7 +271,7 @@ export default function FloorPlanSVG({ floor }: FloorPlanSVGProps) {
         fontSize="9"
         fontWeight="500"
       >
-        🛗 Aufzug
+        🛗 {t("floorplan.elevator")}
       </text>
     </svg>
   );

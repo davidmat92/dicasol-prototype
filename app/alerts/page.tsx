@@ -7,6 +7,7 @@ import EscalationBadge from "@/app/components/EscalationBadge";
 import Modal from "@/app/components/Modal";
 import { Check, Clock, AlertTriangle, Users, Phone, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 type FilterType = "alle" | "offen" | "bestaetigt";
 
@@ -42,6 +43,7 @@ const escalationData: Record<
 };
 
 export default function AlertsPage() {
+  const { t } = useLanguage();
   const [alertList, setAlertList] = useState<Alert[]>(initialAlerts);
   const [filter, setFilter] = useState<FilterType>("alle");
   const [showEscalation, setShowEscalation] = useState<string | null>(null);
@@ -85,9 +87,9 @@ export default function AlertsPage() {
   };
 
   const filterLabels: Record<FilterType, string> = {
-    alle: "Alle",
-    offen: "Offen",
-    bestaetigt: "Bestaetigt",
+    alle: t("common.all"),
+    offen: t("status.open"),
+    bestaetigt: t("status.confirmed"),
   };
 
   const selectedEscalation = showEscalation
@@ -102,10 +104,10 @@ export default function AlertsPage() {
       {/* Header */}
       <div className="mb-5">
         <h1 className="text-[22px] font-bold text-text-primary tracking-tight">
-          Alarme
+          {t("alerts.title")}
         </h1>
         <p className="text-sm text-text-secondary mt-0.5">
-          {openCount} offene Meldungen
+          {openCount} {t("alerts.openCount")}
         </p>
       </div>
 
@@ -204,7 +206,7 @@ export default function AlertsPage() {
                   }}
                 >
                   <Check size={16} />
-                  Bestaetigen
+                  {t("alerts.confirm")}
                 </button>
               )}
             </div>
@@ -222,7 +224,7 @@ export default function AlertsPage() {
             <Check size={28} className="text-accent" />
           </div>
           <p className="text-sm font-medium text-text-secondary">
-            Keine Alarme in dieser Kategorie
+            {t("alerts.noAlarms")}
           </p>
         </div>
       )}
@@ -231,7 +233,7 @@ export default function AlertsPage() {
       <Modal
         open={!!showEscalation}
         onClose={() => setShowEscalation(null)}
-        title="Eskalationskette"
+        title={t("alerts.escalation")}
       >
         {selectedAlert && selectedEscalation && (
           <div>
@@ -291,7 +293,7 @@ export default function AlertsPage() {
                         {step.time !== "-" && (
                           <span className="text-[11px] text-text-secondary flex items-center gap-1">
                             <Clock size={10} />
-                            {step.time} Uhr
+                            {step.time} {t("alerts.oclock")}
                           </span>
                         )}
                         <span
@@ -323,7 +325,7 @@ export default function AlertsPage() {
               className="w-full flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98] mt-4"
             >
               <Phone size={16} />
-              Zustaendige Person anrufen
+              {t("alerts.callResponsible")}
             </button>
           </div>
         )}

@@ -10,36 +10,34 @@ import {
   Server,
   CheckCircle2,
 } from "lucide-react";
-
-const privacyFeatures = [
-  {
-    icon: Eye,
-    title: "Keine Kameras oder Mikrofone",
-    description:
-      "DICASOL verzichtet bewusst auf Bild- und Tonaufnahmen. Alle Sensoren erfassen ausschliesslich Umgebungsdaten.",
-  },
-  {
-    icon: Lock,
-    title: "Ende-zu-Ende-Verschluesselung",
-    description:
-      "Alle Sensordaten werden verschluesselt uebertragen und in zertifizierten deutschen Rechenzentren gespeichert.",
-  },
-  {
-    icon: Server,
-    title: "DSGVO-konformes Hosting",
-    description:
-      "Unsere Server stehen ausschliesslich in Deutschland. Es erfolgt keine Datenuebertragung in Drittlaender.",
-  },
-  {
-    icon: FileText,
-    title: "Datenminimierung",
-    description:
-      "Es werden nur die fuer die Pflege notwendigen Daten erfasst. Bewegungsprofile werden anonymisiert gespeichert.",
-  },
-];
+import { useLanguage } from "@/app/context/LanguageContext";
 
 export default function PrivacyPage() {
   const router = useRouter();
+  const { t } = useLanguage();
+
+  const privacyFeatures = [
+    {
+      icon: Eye,
+      title: t("privacy.noCameras"),
+      description: t("privacy.noCamerasDesc"),
+    },
+    {
+      icon: Lock,
+      title: t("privacy.encryption"),
+      description: t("privacy.encryptionDesc"),
+    },
+    {
+      icon: Server,
+      title: t("privacy.hosting"),
+      description: t("privacy.hostingDesc"),
+    },
+    {
+      icon: FileText,
+      title: t("privacy.dataMin"),
+      description: t("privacy.dataMinDesc"),
+    },
+  ];
 
   return (
     <div className="px-4 py-5 animate-fade-in">
@@ -48,7 +46,7 @@ export default function PrivacyPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       <div className="flex items-center gap-3 mb-6">
@@ -60,10 +58,10 @@ export default function PrivacyPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-text-primary tracking-tight">
-            Datenschutz
+            {t("privacy.title")}
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">
-            DSGVO-konform &middot; TUeV-zertifiziert
+            {t("privacy.subtitle")}
           </p>
         </div>
       </div>
@@ -75,20 +73,20 @@ export default function PrivacyPage() {
         </div>
         <div>
           <p className="text-sm font-semibold text-text-primary">
-            Vollstaendig DSGVO-konform
+            {t("privacy.compliant")}
           </p>
           <p className="text-xs text-text-secondary mt-0.5">
-            Letzte Pruefung: Februar 2026
+            {t("privacy.lastCheck")}
           </p>
           <p className="text-[11px] text-accent font-medium mt-0.5">
-            Zertifiziert durch TUeV Rheinland
+            {t("privacy.certified")}
           </p>
         </div>
       </div>
 
       {/* Features */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Datenschutz-Massnahmen
+        {t("privacy.measures")}
       </h3>
       <div className="space-y-3 stagger">
         {privacyFeatures.map((feature, i) => {
@@ -118,14 +116,14 @@ export default function PrivacyPage() {
 
       {/* Data access */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3 mt-6">
-        Ihre Rechte
+        {t("privacy.rights")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-6">
         {[
-          "Auskunftsrecht (Art. 15 DSGVO)",
-          "Recht auf Berichtigung (Art. 16 DSGVO)",
-          "Recht auf Loeschung (Art. 17 DSGVO)",
-          "Recht auf Datenportabilitaet (Art. 20 DSGVO)",
+          t("privacy.right1"),
+          t("privacy.right2"),
+          t("privacy.right3"),
+          t("privacy.right4"),
         ].map((right, i) => (
           <div key={i} className="flex items-center gap-3 p-3.5">
             <CheckCircle2 size={16} className="text-accent shrink-0" />

@@ -12,9 +12,11 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { rooms } from "@/app/lib/mock-data";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 export default function FacilityPage() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   const totalSensors = rooms.reduce((sum, r) => sum + r.sensors.length, 0);
   const onlineRooms = rooms.filter((r) => r.status !== "offline").length;
@@ -28,7 +30,7 @@ export default function FacilityPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       <div className="flex items-center gap-3 mb-6">
@@ -40,10 +42,10 @@ export default function FacilityPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-text-primary tracking-tight">
-            Einrichtung
+            {t("facility.title")}
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">
-            Seniorenheim Sonnenschein
+            {t("settings.facilityName")}
           </p>
         </div>
       </div>
@@ -59,12 +61,12 @@ export default function FacilityPage() {
           </div>
           <div>
             <h2 className="font-semibold text-[16px] text-text-primary">
-              Seniorenheim Sonnenschein
+              {t("settings.facilityName")}
             </h2>
             <div className="flex items-center gap-1.5 mt-1">
               <MapPin size={12} className="text-text-tertiary" />
               <p className="text-xs text-text-secondary">
-                Musterstrasse 42, 52062 Aachen
+                {t("facility.address")}
               </p>
             </div>
           </div>
@@ -80,7 +82,7 @@ export default function FacilityPage() {
               {rooms.length}
             </p>
             <p className="text-[10px] text-text-tertiary font-medium">
-              Bewohner
+              {t("common.residents")}
             </p>
           </div>
           <div
@@ -92,7 +94,7 @@ export default function FacilityPage() {
               {rooms.length}
             </p>
             <p className="text-[10px] text-text-tertiary font-medium">
-              Zimmer
+              {t("common.room")}
             </p>
           </div>
         </div>
@@ -100,13 +102,13 @@ export default function FacilityPage() {
 
       {/* System status */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Systemstatus
+        {t("facility.systemStatus")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-5">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
             <Wifi size={18} className="text-accent" />
-            <span className="text-sm text-text-primary">Sensoren Online</span>
+            <span className="text-sm text-text-primary">{t("facility.sensorsOnline")}</span>
           </div>
           <span className="text-sm font-semibold text-accent">
             {onlineRooms}/{rooms.length}
@@ -116,7 +118,7 @@ export default function FacilityPage() {
           <div className="flex items-center gap-3">
             <CheckCircle2 size={18} className="text-accent" />
             <span className="text-sm text-text-primary">
-              Gesamtsensoren
+              {t("facility.totalSensors")}
             </span>
           </div>
           <span className="text-sm font-semibold text-text-primary">
@@ -138,7 +140,7 @@ export default function FacilityPage() {
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-3">
               <AlertTriangle size={18} className="text-danger" />
-              <span className="text-sm text-text-primary">Aktive Alarme</span>
+              <span className="text-sm text-text-primary">{t("facility.activeAlarms")}</span>
             </div>
             <span className="text-sm font-semibold text-danger">
               {alarmRooms}
@@ -149,16 +151,16 @@ export default function FacilityPage() {
 
       {/* Floors */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Stockwerke
+        {t("facility.floors")}
       </h3>
       <div className="space-y-2 mb-5 stagger">
         {[
           {
-            name: "Erdgeschoss",
+            name: t("floorplan.ground"),
             rooms: rooms.filter((r) => r.floor === 1),
           },
           {
-            name: "1. Obergeschoss",
+            name: t("floorplan.upper"),
             rooms: rooms.filter((r) => r.floor === 2),
           },
         ].map((floor, i) => (
@@ -168,7 +170,7 @@ export default function FacilityPage() {
                 {floor.name}
               </p>
               <span className="text-xs text-text-tertiary">
-                {floor.rooms.length} Zimmer
+                {floor.rooms.length} {t("common.room")}
               </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -205,17 +207,17 @@ export default function FacilityPage() {
 
       {/* License info */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Lizenz
+        {t("facility.license")}
       </h3>
       <div className="glass p-4 mb-6">
         <div className="flex items-center justify-between mb-2">
-          <p className="text-sm font-medium text-text-primary">SaaS-Lizenz</p>
+          <p className="text-sm font-medium text-text-primary">{t("facility.saas")}</p>
           <span className="text-xs font-semibold text-accent px-2 py-0.5 rounded-lg bg-accent-dim">
             Aktiv
           </span>
         </div>
         <p className="text-xs text-text-secondary">
-          {rooms.length} Zimmer-Lizenzen &middot; Verlaengerung: 01.04.2026
+          {t("facility.renewal")}
         </p>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 import { rooms } from "@/app/lib/mock-data";
 import FloorPlanSVG from "@/app/components/FloorPlanSVG";
 import {
@@ -14,6 +15,7 @@ import {
 
 export default function FloorPlanPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [activeFloor, setActiveFloor] = useState(1);
 
   const floorRooms = rooms.filter((r) => r.floor === activeFloor);
@@ -32,7 +34,7 @@ export default function FloorPlanPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       {/* Header */}
@@ -45,10 +47,10 @@ export default function FloorPlanPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-text-primary tracking-tight">
-            Grundriss
+            {t("floorplan.title")}
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">
-            Interaktive Raumkarte
+            {t("floorplan.subtitle")}
           </p>
         </div>
       </div>
@@ -59,8 +61,8 @@ export default function FloorPlanPage() {
         style={{ background: "var(--bg-elevated)" }}
       >
         {[
-          { floor: 1, label: "Erdgeschoss" },
-          { floor: 2, label: "1. Obergeschoss" },
+          { floor: 1, label: t("floorplan.ground") },
+          { floor: 2, label: t("floorplan.upper") },
         ].map((f) => (
           <button
             key={f.floor}
@@ -87,7 +89,7 @@ export default function FloorPlanPage() {
           >
             <AlertTriangle size={14} className="mx-auto text-danger mb-1" />
             <p className="text-sm font-bold text-danger">{alarmCount}</p>
-            <p className="text-[9px] text-danger/70 font-medium">Alarm</p>
+            <p className="text-[9px] text-danger/70 font-medium">{t("status.alarm")}</p>
           </div>
         )}
         {warningCount > 0 && (
@@ -97,7 +99,7 @@ export default function FloorPlanPage() {
           >
             <AlertTriangle size={14} className="mx-auto text-warning mb-1" />
             <p className="text-sm font-bold text-warning">{warningCount}</p>
-            <p className="text-[9px] text-warning/70 font-medium">Warnung</p>
+            <p className="text-[9px] text-warning/70 font-medium">{t("status.warning")}</p>
           </div>
         )}
         <div
@@ -106,7 +108,7 @@ export default function FloorPlanPage() {
         >
           <CheckCircle2 size={14} className="mx-auto text-accent mb-1" />
           <p className="text-sm font-bold text-accent">{okCount}</p>
-          <p className="text-[9px] text-accent/70 font-medium">Normal</p>
+          <p className="text-[9px] text-accent/70 font-medium">{t("status.normal")}</p>
         </div>
         {offlineCount > 0 && (
           <div
@@ -115,7 +117,7 @@ export default function FloorPlanPage() {
           >
             <WifiOff size={14} className="mx-auto text-offline mb-1" />
             <p className="text-sm font-bold text-offline">{offlineCount}</p>
-            <p className="text-[9px] text-offline/70 font-medium">Offline</p>
+            <p className="text-[9px] text-offline/70 font-medium">{t("status.offline")}</p>
           </div>
         )}
       </div>
@@ -128,14 +130,14 @@ export default function FloorPlanPage() {
       {/* Legend */}
       <div className="glass p-4">
         <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-          Legende
+          {t("floorplan.legend")}
         </h3>
         <div className="grid grid-cols-2 gap-2">
           {[
-            { color: "var(--danger)", label: "Alarm" },
-            { color: "var(--warning)", label: "Warnung" },
-            { color: "var(--accent)", label: "Normal" },
-            { color: "var(--offline)", label: "Offline" },
+            { color: "var(--danger)", label: t("status.alarm") },
+            { color: "var(--warning)", label: t("status.warning") },
+            { color: "var(--accent)", label: t("status.normal") },
+            { color: "var(--offline)", label: t("status.offline") },
           ].map((item) => (
             <div key={item.label} className="flex items-center gap-2">
               <span
@@ -147,7 +149,7 @@ export default function FloorPlanPage() {
           ))}
         </div>
         <p className="text-[10px] text-text-tertiary mt-3">
-          Tippen Sie auf einen Raum, um die Detailansicht zu oeffnen.
+          {t("floorplan.hint")}
         </p>
       </div>
     </div>

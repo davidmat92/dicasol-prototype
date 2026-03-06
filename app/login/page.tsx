@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/app/context/AuthContext";
+import { useLanguage } from "@/app/context/LanguageContext";
 import {
   Shield,
   Lock,
@@ -18,6 +19,7 @@ type LoginStep = "splash" | "credentials" | "2fa" | "success";
 
 export default function LoginPage() {
   const { login, setUserRole, userRole } = useAuth();
+  const { t } = useLanguage();
   const [step, setStep] = useState<LoginStep>("splash");
   const [email, setEmail] = useState("m.schneider@sonnenschein.de");
   const [password, setPassword] = useState("••••••••");
@@ -111,7 +113,7 @@ export default function LoginPage() {
             DICASOL
           </h1>
           <p className="text-sm text-text-secondary">
-            Intelligentes Pflege-Monitoring
+            {t("login.tagline")}
           </p>
           <div className="mt-8 flex items-center gap-2 justify-center">
             <div
@@ -144,12 +146,12 @@ export default function LoginPage() {
             <CheckCircle2 size={40} className="text-white" />
           </div>
           <h2 className="text-2xl font-bold text-text-primary mb-2">
-            Willkommen zurueck!
+            {t("login.welcome")}
           </h2>
           <p className="text-sm text-text-secondary">
             {userRole === "angehoerig"
-              ? "Sie werden zum Familienportal weitergeleitet..."
-              : "Sie werden zum Dashboard weitergeleitet..."}
+              ? t("login.redirect.family")
+              : t("login.redirect.nurse")}
           </p>
           <div className="mt-6 w-32 h-1 rounded-full mx-auto overflow-hidden bg-bg-elevated">
             <div
@@ -190,10 +192,10 @@ export default function LoginPage() {
               </span>
             </div>
             <h1 className="text-2xl font-bold text-text-primary tracking-tight mb-1">
-              Anmelden
+              {t("login.title")}
             </h1>
             <p className="text-sm text-text-secondary">
-              Melden Sie sich mit Ihren Zugangsdaten an
+              {t("login.subtitle")}
             </p>
           </div>
 
@@ -216,7 +218,7 @@ export default function LoginPage() {
               }}
             >
               <Shield size={16} />
-              Pflegekraft
+              {t("login.nurse")}
             </button>
             <button
               onClick={() => setUserRole("angehoerig")}
@@ -231,7 +233,7 @@ export default function LoginPage() {
               }}
             >
               <Users size={16} />
-              Angehoerige/r
+              {t("login.family")}
             </button>
           </div>
 
@@ -242,7 +244,7 @@ export default function LoginPage() {
           >
             <div>
               <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 block">
-                E-Mail
+                {t("login.email")}
               </label>
               <div
                 className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border transition-colors"
@@ -268,7 +270,7 @@ export default function LoginPage() {
 
             <div>
               <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 block">
-                Passwort
+                {t("login.password")}
               </label>
               <div
                 className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border transition-colors"
@@ -310,11 +312,11 @@ export default function LoginPage() {
                   <CheckCircle2 size={14} className="text-accent" />
                 </div>
                 <span className="text-xs text-text-secondary">
-                  Angemeldet bleiben
+                  {t("login.rememberMe")}
                 </span>
               </label>
               <button className="text-xs text-accent font-medium">
-                Passwort vergessen?
+                {t("login.forgotPassword")}
               </button>
             </div>
           </div>
@@ -330,7 +332,7 @@ export default function LoginPage() {
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
               <>
-                Anmelden
+                {t("login.submit")}
                 <ArrowRight size={16} />
               </>
             )}
@@ -341,11 +343,11 @@ export default function LoginPage() {
             <div className="flex items-center justify-center gap-2 mb-3">
               <Shield size={14} className="text-accent" />
               <span className="text-[11px] text-text-tertiary font-medium">
-                DSGVO-konform &middot; Ende-zu-Ende verschluesselt
+                {t("login.dsgvo")}
               </span>
             </div>
             <p className="text-[10px] text-text-tertiary">
-              DICASOL UG &middot; Version 3.0.0
+              {t("login.footer")}
             </p>
           </div>
         </div>
@@ -369,11 +371,10 @@ export default function LoginPage() {
             <Smartphone size={28} className="text-accent" />
           </div>
           <h1 className="text-2xl font-bold text-text-primary tracking-tight mb-2">
-            Zwei-Faktor-Authentifizierung
+            {t("login.2fa.title")}
           </h1>
           <p className="text-sm text-text-secondary leading-relaxed">
-            Geben Sie den 6-stelligen Code ein, den wir an Ihr Geraet gesendet
-            haben.
+            {t("login.2fa.subtitle")}
           </p>
         </div>
 
@@ -418,10 +419,7 @@ export default function LoginPage() {
           </div>
           <div>
             <p className="text-[11px] text-text-secondary">
-              <span className="font-semibold text-text-primary">
-                Demo-Modus:
-              </span>{" "}
-              Geben Sie 123456 ein oder einen beliebigen 6-stelligen Code.
+              {t("login.2fa.demo")}
             </p>
           </div>
         </div>
@@ -436,7 +434,7 @@ export default function LoginPage() {
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : (
             <>
-              Verifizieren
+              {t("login.2fa.verify")}
               <ArrowRight size={16} />
             </>
           )}
@@ -444,7 +442,7 @@ export default function LoginPage() {
 
         {/* Resend */}
         <button className="w-full text-sm text-text-secondary py-3 transition-colors active:text-text-primary">
-          Code erneut senden
+          {t("login.2fa.resend")}
         </button>
 
         {/* Back */}
@@ -455,7 +453,7 @@ export default function LoginPage() {
           }}
           className="w-full text-sm text-text-tertiary py-3 mt-2 transition-colors active:text-text-primary"
         >
-          Zurueck zur Anmeldung
+          {t("login.2fa.back")}
         </button>
       </div>
 

@@ -14,8 +14,10 @@ import {
   FileBarChart,
 } from "lucide-react";
 import DashboardFloorPlan from "./components/DashboardFloorPlan";
+import { useLanguage } from "./context/LanguageContext";
 
 export default function Dashboard() {
+  const { t } = useLanguage();
   const criticalRooms = rooms.filter((r) => r.status === "alarm");
   const warningRooms = rooms.filter((r) => r.status === "warnung");
   const okRooms = rooms.filter((r) => r.status === "ok");
@@ -28,10 +30,10 @@ export default function Dashboard() {
   const hour = new Date().getHours();
   const greeting =
     hour < 12
-      ? "Guten Morgen"
+      ? t("dashboard.greeting.morning")
       : hour < 18
-        ? "Guten Tag"
-        : "Guten Abend";
+        ? t("dashboard.greeting.afternoon")
+        : t("dashboard.greeting.evening");
 
   return (
     <div className="px-4 py-5 stagger">
@@ -41,7 +43,7 @@ export default function Dashboard() {
           {greeting}, Maria
         </h1>
         <p className="text-sm text-text-secondary mt-0.5">
-          Schicht: Nachmittag &middot; Erdgeschoss & 1. OG
+          {t("dashboard.shift")}
         </p>
       </div>
 
@@ -69,10 +71,10 @@ export default function Dashboard() {
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-danger">
-                      Kritischer Alarm
+                      {t("dashboard.criticalAlarm")}
                     </p>
                     <p className="text-base font-bold text-text-primary">
-                      Sturz erkannt
+                      {t("dashboard.fallDetected")}
                     </p>
                   </div>
                 </div>
@@ -91,7 +93,7 @@ export default function Dashboard() {
               </p>
 
               <button className="w-full flex items-center justify-center gap-2 bg-danger text-white text-sm font-semibold py-3 rounded-2xl transition-all active:scale-[0.98]">
-                Jetzt pruefen
+                {t("dashboard.checkNow")}
                 <ArrowRight size={16} />
               </button>
             </div>
@@ -113,7 +115,7 @@ export default function Dashboard() {
             {rooms.length}
           </p>
           <p className="text-[10px] text-text-tertiary font-medium">
-            Raeume
+            {t("dashboard.rooms")}
           </p>
         </div>
         <div className="glass p-3 text-center" style={{ background: "var(--danger-dim)" }}>
@@ -125,7 +127,7 @@ export default function Dashboard() {
             {openAlerts.length}
           </p>
           <p className="text-[10px] text-danger/70 font-medium">
-            Alarme
+            {t("dashboard.alarms")}
           </p>
         </div>
         <div className="glass p-3 text-center">
@@ -137,7 +139,7 @@ export default function Dashboard() {
             {rooms.length - offlineRooms.length}
           </p>
           <p className="text-[10px] text-text-tertiary font-medium">
-            Online
+            {t("dashboard.online")}
           </p>
         </div>
         <div className="glass p-3 text-center">
@@ -149,7 +151,7 @@ export default function Dashboard() {
             {offlineRooms.length}
           </p>
           <p className="text-[10px] text-text-tertiary font-medium">
-            Offline
+            {t("dashboard.offline")}
           </p>
         </div>
       </div>
@@ -168,9 +170,9 @@ export default function Dashboard() {
           </div>
           <div>
             <p className="text-sm font-semibold text-text-primary">
-              Grundriss
+              {t("dashboard.floorplan")}
             </p>
-            <p className="text-[10px] text-text-tertiary">Raumkarte</p>
+            <p className="text-[10px] text-text-tertiary">{t("dashboard.floorplanSub")}</p>
           </div>
         </Link>
         <Link
@@ -185,9 +187,9 @@ export default function Dashboard() {
           </div>
           <div>
             <p className="text-sm font-semibold text-text-primary">
-              Berichte
+              {t("dashboard.reports")}
             </p>
-            <p className="text-[10px] text-text-tertiary">Tagesbericht</p>
+            <p className="text-[10px] text-text-tertiary">{t("dashboard.reportsSub")}</p>
           </div>
         </Link>
       </div>
@@ -197,7 +199,7 @@ export default function Dashboard() {
         <section className="mb-5">
           <h2 className="text-xs font-bold text-danger uppercase tracking-wider mb-3 flex items-center gap-2">
             <span className="w-2 h-2 bg-danger rounded-full animate-pulse-glow" />
-            Kritisch ({criticalRooms.length})
+            {t("dashboard.critical")} ({criticalRooms.length})
           </h2>
           <div className="space-y-3 stagger">
             {criticalRooms.map((room) => (
@@ -212,7 +214,7 @@ export default function Dashboard() {
         <section className="mb-5">
           <h2 className="text-xs font-bold text-warning uppercase tracking-wider mb-3 flex items-center gap-2">
             <span className="w-2 h-2 bg-warning rounded-full" />
-            Warnung ({warningRooms.length})
+            {t("dashboard.warning")} ({warningRooms.length})
           </h2>
           <div className="space-y-3 stagger">
             {warningRooms.map((room) => (
@@ -227,7 +229,7 @@ export default function Dashboard() {
         <section className="mb-5">
           <h2 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
             <span className="w-2 h-2 bg-accent rounded-full" />
-            Normal ({okRooms.length})
+            {t("dashboard.normal")} ({okRooms.length})
           </h2>
           <div className="space-y-3 stagger">
             {okRooms.map((room) => (
@@ -242,7 +244,7 @@ export default function Dashboard() {
         <section className="mb-5">
           <h2 className="text-xs font-bold text-text-tertiary uppercase tracking-wider mb-3 flex items-center gap-2">
             <span className="w-2 h-2 bg-offline rounded-full" />
-            Offline ({offlineRooms.length})
+            {t("dashboard.offline")} ({offlineRooms.length})
           </h2>
           <div className="space-y-3 stagger">
             {offlineRooms.map((room) => (

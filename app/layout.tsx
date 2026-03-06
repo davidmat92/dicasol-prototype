@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
+import { LanguageProvider } from "./context/LanguageContext";
 import NavigationWrapper from "./components/NavigationWrapper";
 
 export const metadata: Metadata = {
@@ -26,9 +27,11 @@ export default function RootLayout({
     <html lang="de" data-theme="dark" suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider>
-          <AuthProvider>
-            <NavigationWrapper>{children}</NavigationWrapper>
-          </AuthProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <NavigationWrapper>{children}</NavigationWrapper>
+            </AuthProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 import { searchAll, type SearchResult } from "@/app/lib/mock-data";
 import SensorIcon from "@/app/components/SensorIcon";
 import {
@@ -26,19 +27,9 @@ function getResultIcon(type: SearchResult["type"]) {
   }
 }
 
-function getResultTypeLabel(type: SearchResult["type"]) {
-  switch (type) {
-    case "room":
-      return "Zimmer";
-    case "resident":
-      return "Bewohner";
-    case "event":
-      return "Ereignis";
-  }
-}
-
 export default function SearchPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const results = searchAll(query);
@@ -46,6 +37,17 @@ export default function SearchPage() {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  function getResultTypeLabel(type: SearchResult["type"]) {
+    switch (type) {
+      case "room":
+        return t("common.room");
+      case "resident":
+        return t("common.residents");
+      case "event":
+        return t("common.events");
+    }
+  }
 
   // Group results by type
   const roomResults = results.filter((r) => r.type === "room");
@@ -68,7 +70,7 @@ export default function SearchPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Zimmer, Bewohner, Ereignisse suchen..."
+          placeholder={t("search.placeholder")}
           className="flex-1 bg-transparent text-sm text-text-primary outline-none placeholder:text-text-tertiary"
         />
         {query && (
@@ -82,7 +84,7 @@ export default function SearchPage() {
       {!query && (
         <>
           <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-            Letzte Suchen
+            {t("search.recent")}
           </h3>
           <div className="flex flex-wrap gap-2 mb-6">
             {recentSearches.map((term) => (
@@ -99,7 +101,7 @@ export default function SearchPage() {
           </div>
 
           <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-            Schnellzugriff
+            {t("search.quickAccess")}
           </h3>
           <div className="space-y-2 stagger">
             <button
@@ -114,10 +116,10 @@ export default function SearchPage() {
               </div>
               <div className="flex-1 text-left">
                 <p className="text-sm font-medium text-text-primary">
-                  Grundriss
+                  {t("dashboard.floorplan")}
                 </p>
                 <p className="text-xs text-text-tertiary">
-                  Interaktive Raumkarte
+                  {t("floorplan.subtitle")}
                 </p>
               </div>
               <ArrowRight size={16} className="text-text-tertiary" />
@@ -134,10 +136,10 @@ export default function SearchPage() {
               </div>
               <div className="flex-1 text-left">
                 <p className="text-sm font-medium text-text-primary">
-                  Berichte
+                  {t("dashboard.reports")}
                 </p>
                 <p className="text-xs text-text-tertiary">
-                  Analysen & Statistiken
+                  {t("reports.subtitle")}
                 </p>
               </div>
               <ArrowRight size={16} className="text-text-tertiary" />
@@ -151,10 +153,10 @@ export default function SearchPage() {
         <div className="text-center py-12">
           <Search size={40} className="mx-auto text-text-tertiary mb-3" />
           <p className="text-sm text-text-secondary">
-            Keine Ergebnisse fuer &quot;{query}&quot;
+            {t("search.noResults")} &quot;{query}&quot;
           </p>
           <p className="text-xs text-text-tertiary mt-1">
-            Versuchen Sie einen anderen Suchbegriff
+            {t("search.tryAnother")}
           </p>
         </div>
       )}
@@ -167,7 +169,7 @@ export default function SearchPage() {
             <div>
               <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-2">
                 <Bed size={12} />
-                Zimmer ({roomResults.length})
+                {t("common.room")} ({roomResults.length})
               </h3>
               <div className="glass divide-y divide-border overflow-hidden">
                 {roomResults.map((result) => (
@@ -213,12 +215,12 @@ export default function SearchPage() {
                         }}
                       >
                         {result.status === "alarm"
-                          ? "Alarm"
+                          ? t("status.alarm")
                           : result.status === "warnung"
-                            ? "Warnung"
+                            ? t("status.warning")
                             : result.status === "offline"
-                              ? "Offline"
-                              : "Normal"}
+                              ? t("status.offline")
+                              : t("status.normal")}
                       </span>
                     )}
                   </button>
@@ -232,7 +234,7 @@ export default function SearchPage() {
             <div>
               <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-2">
                 <User size={12} />
-                Bewohner ({residentResults.length})
+                {t("common.residents")} ({residentResults.length})
               </h3>
               <div className="glass divide-y divide-border overflow-hidden">
                 {residentResults.map((result) => (
@@ -270,7 +272,7 @@ export default function SearchPage() {
             <div>
               <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-2">
                 <Clock size={12} />
-                Ereignisse ({eventResults.length})
+                {t("common.events")} ({eventResults.length})
               </h3>
               <div className="glass divide-y divide-border overflow-hidden">
                 {eventResults.map((result) => (

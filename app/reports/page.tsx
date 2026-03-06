@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 import { rooms, alerts } from "@/app/lib/mock-data";
 import BarChart from "@/app/components/BarChart";
 import LineChart from "@/app/components/LineChart";
@@ -46,6 +47,7 @@ const sensorDistribution = [
 
 export default function ReportsPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [period, setPeriod] = useState<"heute" | "woche" | "monat">("woche");
   const [showExportToast, setShowExportToast] = useState(false);
 
@@ -69,7 +71,7 @@ export default function ReportsPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       {/* Header */}
@@ -83,10 +85,10 @@ export default function ReportsPage() {
           </div>
           <div>
             <h1 className="text-xl font-bold text-text-primary tracking-tight">
-              Berichte
+              {t("reports.title")}
             </h1>
             <p className="text-xs text-text-secondary mt-0.5">
-              Analysen & Statistiken
+              {t("reports.subtitle")}
             </p>
           </div>
         </div>
@@ -114,7 +116,7 @@ export default function ReportsPage() {
               color: period === p ? "white" : "var(--text-secondary)",
             }}
           >
-            {p === "heute" ? "Heute" : p === "woche" ? "Woche" : "Monat"}
+            {p === "heute" ? t("common.today") : p === "woche" ? t("common.week") : t("common.month")}
           </button>
         ))}
       </div>
@@ -132,7 +134,7 @@ export default function ReportsPage() {
             {period === "heute" ? openAlerts : period === "woche" ? 42 : 156}
           </p>
           <p className="text-[10px] text-text-tertiary font-medium">
-            Alarme
+            {t("reports.alarms")}
           </p>
         </div>
         <div className="glass p-3 text-center">
@@ -146,7 +148,7 @@ export default function ReportsPage() {
             {period === "heute" ? "2:34" : period === "woche" ? "3:12" : "2:48"}
           </p>
           <p className="text-[10px] text-text-tertiary font-medium">
-            Ø Reaktion
+            {t("reports.avgReaction")}
           </p>
         </div>
         <div className="glass p-3 text-center">
@@ -158,7 +160,7 @@ export default function ReportsPage() {
           </div>
           <p className="text-xl font-bold text-accent">{sensorUptime}%</p>
           <p className="text-[10px] text-text-tertiary font-medium">
-            Verfuegbarkeit
+            {t("reports.availability")}
           </p>
         </div>
       </div>
@@ -166,7 +168,7 @@ export default function ReportsPage() {
       {/* Alarm Trend */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
         <TrendingDown size={12} />
-        Alarmverlauf (7 Tage)
+        {t("reports.alarmHistory")}
       </h3>
       <div className="glass p-4 mb-6">
         <LineChart
@@ -182,7 +184,7 @@ export default function ReportsPage() {
       {/* Alarms by Type */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
         <AlertTriangle size={12} />
-        Alarme nach Typ
+        {t("reports.alarmsByType")}
       </h3>
       <div className="glass p-4 mb-6">
         <BarChart data={alarmsByType} />
@@ -191,13 +193,13 @@ export default function ReportsPage() {
       {/* Sensor Status Distribution */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
         <Wifi size={12} />
-        Sensor-Verteilung
+        {t("reports.sensorDistribution")}
       </h3>
       <div className="glass p-4 mb-6 flex justify-center">
         <DonutChart
           data={sensorDistribution}
           centerValue={String(totalSensors)}
-          centerLabel="Sensoren"
+          centerLabel={t("reports.sensors")}
         />
       </div>
 
@@ -207,7 +209,7 @@ export default function ReportsPage() {
         className="w-full flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98] mb-5"
       >
         <Download size={16} />
-        Bericht exportieren (PDF)
+        {t("reports.exportPdf")}
       </button>
 
       {/* Report info */}
@@ -215,7 +217,7 @@ export default function ReportsPage() {
         <div className="flex items-center gap-3">
           <Calendar size={16} className="text-text-tertiary" />
           <div>
-            <p className="text-xs text-text-secondary">Berichtszeitraum</p>
+            <p className="text-xs text-text-secondary">{t("reports.period")}</p>
             <p className="text-sm font-medium text-text-primary">
               {period === "heute"
                 ? "04. Maerz 2026"
@@ -241,7 +243,7 @@ export default function ReportsPage() {
           >
             <CheckCircle2 size={20} className="text-white shrink-0" />
             <span className="text-sm font-semibold text-white">
-              Bericht wird als PDF exportiert...
+              {t("reports.exporting")}
             </span>
           </div>
         </div>

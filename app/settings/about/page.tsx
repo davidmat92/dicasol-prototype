@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Info, ExternalLink, Award, Users, Zap } from "lucide-react";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 const partners = [
   { name: "Deutsche Telekom", role: "IoT-Infrastruktur" },
@@ -10,15 +11,16 @@ const partners = [
   { name: "TUeV Rheinland", role: "Zertifizierung" },
 ];
 
-const stats = [
-  { value: "500+", label: "Installierte Zimmer" },
-  { value: "99.9%", label: "Verfuegbarkeit" },
-  { value: "< 3s", label: "Alarmzeit" },
-  { value: "24/7", label: "Monitoring" },
-];
-
 export default function AboutPage() {
   const router = useRouter();
+  const { t } = useLanguage();
+
+  const stats = [
+    { value: "500+", label: t("about.installedRooms") },
+    { value: "99.9%", label: t("about.availability") },
+    { value: "< 3s", label: t("about.alarmTime") },
+    { value: "24/7", label: t("about.monitoring") },
+  ];
 
   return (
     <div className="px-4 py-5 animate-fade-in">
@@ -27,7 +29,7 @@ export default function AboutPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       {/* Hero */}
@@ -39,7 +41,7 @@ export default function AboutPage() {
           DICASOL
         </h1>
         <p className="text-sm text-text-secondary mt-1">
-          Intelligentes Pflege-Monitoring
+          {t("about.tagline")}
         </p>
         <p className="text-xs text-text-tertiary mt-0.5">Version 3.0.0</p>
       </div>
@@ -47,13 +49,7 @@ export default function AboutPage() {
       {/* Mission */}
       <div className="glass p-4 mb-5">
         <p className="text-sm text-text-secondary leading-relaxed">
-          DICASOL steht fuer{" "}
-          <span className="text-text-primary font-semibold">
-            Digital Care Solution
-          </span>
-          . Unsere Mission ist es, durch intelligente Sensortechnologie die
-          Sicherheit in Pflegeeinrichtungen zu erhoehen - ohne dabei die
-          Privatsphaere der Bewohner einzuschraenken.
+          {t("about.description")}
         </p>
       </div>
 
@@ -71,24 +67,24 @@ export default function AboutPage() {
 
       {/* Key features */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Kernfunktionen
+        {t("about.coreFeatures")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-5">
         {[
           {
             icon: Zap,
-            title: "Echtzeit-Monitoring",
-            desc: "Sofortige Alarme bei kritischen Ereignissen",
+            title: t("about.realtime"),
+            desc: t("about.realtimeDesc"),
           },
           {
             icon: Award,
-            title: "DSGVO-konform",
-            desc: "Keine Kameras, keine Audioaufnahmen",
+            title: t("about.gdpr"),
+            desc: t("about.gdprDesc"),
           },
           {
             icon: Users,
-            title: "Multi-Rollen-System",
-            desc: "Pflege, Verwaltung, Angehoerige",
+            title: t("about.multiRole"),
+            desc: t("about.multiRoleDesc"),
           },
         ].map((feature, i) => {
           const Icon = feature.icon;
@@ -115,7 +111,7 @@ export default function AboutPage() {
 
       {/* Partners */}
       <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-        Partner & Zertifizierungen
+        {t("about.partners")}
       </h3>
       <div className="glass divide-y divide-border overflow-hidden mb-5">
         {partners.map((partner, i) => (
@@ -135,7 +131,7 @@ export default function AboutPage() {
 
       {/* Legal */}
       <div className="glass divide-y divide-border overflow-hidden mb-5">
-        {["Impressum", "Nutzungsbedingungen", "Open-Source-Lizenzen"].map(
+        {[t("about.imprint"), t("about.terms"), t("about.licenses")].map(
           (item, i) => (
             <div key={i} className="flex items-center justify-between p-4">
               <span className="text-sm text-text-primary">{item}</span>
@@ -146,7 +142,7 @@ export default function AboutPage() {
       </div>
 
       <p className="text-center text-[11px] text-text-tertiary mb-4">
-        DICASOL UG &middot; Aachen, Deutschland
+        {t("about.footer")}
         <br />
         &copy; 2024-2026 Alle Rechte vorbehalten
       </p>

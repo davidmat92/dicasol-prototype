@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 import { staffMembers, rooms, type StaffMember } from "@/app/lib/mock-data";
 import Modal from "@/app/components/Modal";
 import {
@@ -59,6 +60,7 @@ function getStatusColor(status: string) {
 
 export default function UsersPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [filter, setFilter] = useState("alle");
   const [selectedUser, setSelectedUser] = useState<StaffMember | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,7 +84,7 @@ export default function UsersPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        Zurueck
+        {t("common.back")}
       </button>
 
       <div className="flex items-center gap-3 mb-5">
@@ -94,10 +96,10 @@ export default function UsersPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-text-primary tracking-tight">
-            Benutzerverwaltung
+            {t("admin.users.title")}
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">
-            {staffMembers.length} Mitarbeiter · {onlineCount} online
+            {staffMembers.length} Mitarbeiter · {onlineCount} {t("admin.users.online")}
           </p>
         </div>
       </div>
@@ -115,7 +117,7 @@ export default function UsersPage() {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Mitarbeiter suchen..."
+          placeholder={t("admin.users.search")}
           className="flex-1 bg-transparent text-sm text-text-primary outline-none placeholder:text-text-tertiary"
         />
       </div>
@@ -124,10 +126,10 @@ export default function UsersPage() {
       <div className="flex gap-1.5 overflow-x-auto mb-5 pb-1 -mx-1 px-1">
         {[
           { key: "alle", label: "Alle" },
-          { key: "pflegefachkraft", label: "Fachkraft" },
-          { key: "pflegehelfer", label: "Helfer" },
-          { key: "admin", label: "Admin" },
-          { key: "verwaltung", label: "Verwaltung" },
+          { key: "pflegefachkraft", label: t("admin.users.expert") },
+          { key: "pflegehelfer", label: t("admin.users.helper") },
+          { key: "admin", label: t("admin.users.admin") },
+          { key: "verwaltung", label: t("admin.users.management") },
         ].map((f) => (
           <button
             key={f.key}
@@ -199,7 +201,7 @@ export default function UsersPage() {
       <Modal
         open={!!selectedUser}
         onClose={() => setSelectedUser(null)}
-        title="Mitarbeiter-Details"
+        title={t("admin.users.details")}
       >
         {selectedUser && (
           <div>
@@ -231,7 +233,7 @@ export default function UsersPage() {
               <div className="flex items-center gap-3 p-4">
                 <Mail size={16} className="text-text-tertiary" />
                 <div>
-                  <p className="text-[11px] text-text-tertiary">E-Mail</p>
+                  <p className="text-[11px] text-text-tertiary">{t("common.email")}</p>
                   <p className="text-sm text-text-primary">
                     {selectedUser.email}
                   </p>
@@ -240,7 +242,7 @@ export default function UsersPage() {
               <div className="flex items-center gap-3 p-4">
                 <Phone size={16} className="text-text-tertiary" />
                 <div>
-                  <p className="text-[11px] text-text-tertiary">Telefon</p>
+                  <p className="text-[11px] text-text-tertiary">{t("common.phone")}</p>
                   <p className="text-sm text-text-primary">
                     {selectedUser.phone}
                   </p>
@@ -249,7 +251,7 @@ export default function UsersPage() {
               <div className="flex items-center gap-3 p-4">
                 <Clock size={16} className="text-text-tertiary" />
                 <div>
-                  <p className="text-[11px] text-text-tertiary">Schicht</p>
+                  <p className="text-[11px] text-text-tertiary">{t("admin.users.shift")}</p>
                   <p className="text-sm text-text-primary">
                     {selectedUser.shiftLabel}
                   </p>
@@ -269,7 +271,7 @@ export default function UsersPage() {
             {selectedUser.assignedRooms.length > 0 && (
               <div className="glass p-4">
                 <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">
-                  Zugewiesene Zimmer
+                  {t("admin.users.assignedRooms")}
                 </h3>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedUser.assignedRooms.map((roomId) => {

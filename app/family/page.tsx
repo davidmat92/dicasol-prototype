@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/app/context/AuthContext";
+import { useLanguage } from "@/app/context/LanguageContext";
 import { rooms } from "@/app/lib/mock-data";
 import Modal from "@/app/components/Modal";
 import {
@@ -76,6 +77,7 @@ const familyActivities = [
 
 export default function FamilyPage() {
   const { logout } = useAuth();
+  const { t } = useLanguage();
   const [showMessage, setShowMessage] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [messageText, setMessageText] = useState("");
@@ -122,7 +124,7 @@ export default function FamilyPage() {
               DICASOL
             </span>
             <span className="text-[10px] text-text-tertiary font-medium">
-              Familienportal
+              {t("family.title")}
             </span>
           </div>
         </div>
@@ -147,13 +149,13 @@ export default function FamilyPage() {
             <Heart size={28} className="text-accent" />
           </div>
           <h1 className="text-xl font-bold text-text-primary mb-1">
-            Ihrer Mutter geht es gut
+            {t("family.motherOk")}
           </h1>
           <p className="text-sm text-text-secondary mb-1">
-            {resident.name}, {resident.age} Jahre
+            {resident.name}, {resident.age} {t("family.years")}
           </p>
           <p className="text-xs text-text-tertiary">
-            {room.name} · Seniorenheim Sonnenschein
+            {room.name} · {t("settings.facilityName")}
           </p>
 
           <div className="grid grid-cols-3 gap-3 mt-5">
@@ -163,7 +165,7 @@ export default function FamilyPage() {
             >
               <Activity size={16} className="mx-auto text-accent mb-1" />
               <p className="text-sm font-bold text-text-primary">Gut</p>
-              <p className="text-[9px] text-text-tertiary">Aktivitaet</p>
+              <p className="text-[9px] text-text-tertiary">{t("family.activity")}</p>
             </div>
             <div
               className="p-3 rounded-xl"
@@ -176,7 +178,7 @@ export default function FamilyPage() {
               <p className="text-sm font-bold text-text-primary">
                 {tempSensor?.value || "22"}°C
               </p>
-              <p className="text-[9px] text-text-tertiary">Zimmer</p>
+              <p className="text-[9px] text-text-tertiary">{t("common.room")}</p>
             </div>
             <div
               className="p-3 rounded-xl"
@@ -184,7 +186,7 @@ export default function FamilyPage() {
             >
               <Moon size={16} className="mx-auto text-accent mb-1" />
               <p className="text-sm font-bold text-text-primary">Gut</p>
-              <p className="text-[9px] text-text-tertiary">Schlaf</p>
+              <p className="text-[9px] text-text-tertiary">{t("family.sleep")}</p>
             </div>
           </div>
         </div>
@@ -205,10 +207,10 @@ export default function FamilyPage() {
               }}
             >
               {tab === "aktuell"
-                ? "Aktuell"
+                ? t("family.current")
                 : tab === "aktivitaet"
-                  ? "Aktivitaet"
-                  : "Info"}
+                  ? t("family.activity")
+                  : t("family.info")}
             </button>
           ))}
         </div>
@@ -219,7 +221,7 @@ export default function FamilyPage() {
             {/* Today's summary */}
             <div className="glass p-4">
               <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-                Tageszusammenfassung
+                {t("family.daySummary")}
               </h3>
               <div className="space-y-2.5">
                 {familyActivities.slice(0, 3).map((act, i) => {
@@ -237,7 +239,7 @@ export default function FamilyPage() {
                           {act.message}
                         </p>
                         <p className="text-[11px] text-text-tertiary mt-0.5">
-                          {act.time} Uhr
+                          {act.time} {t("family.oclock")}
                         </p>
                       </div>
                     </div>
@@ -252,7 +254,7 @@ export default function FamilyPage() {
               className="w-full flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98]"
             >
               <MessageCircle size={16} />
-              Nachricht an Pflegeteam senden
+              {t("family.sendMessage")}
             </button>
           </div>
         )}
@@ -275,7 +277,7 @@ export default function FamilyPage() {
                       {act.message}
                     </p>
                     <p className="text-[11px] text-text-tertiary mt-0.5">
-                      {act.time} Uhr
+                      {act.time} {t("family.oclock")}
                     </p>
                   </div>
                 </div>
@@ -289,30 +291,30 @@ export default function FamilyPage() {
           <div className="space-y-3 stagger">
             <div className="glass p-4">
               <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-                Bewohnerinformationen
+                {t("family.residentInfo")}
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-secondary">Name</span>
+                  <span className="text-sm text-text-secondary">{t("common.name")}</span>
                   <span className="text-sm font-medium text-text-primary">
                     {resident.name}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-secondary">Alter</span>
+                  <span className="text-sm text-text-secondary">{t("common.age")}</span>
                   <span className="text-sm font-medium text-text-primary">
-                    {resident.age} Jahre
+                    {resident.age} {t("family.years")}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-secondary">Zimmer</span>
+                  <span className="text-sm text-text-secondary">{t("common.room")}</span>
                   <span className="text-sm font-medium text-text-primary">
                     {room.name}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-text-secondary">
-                    Pflegegrad
+                    {t("room.careGrade")}
                   </span>
                   <span className="text-sm font-semibold text-accent">
                     {resident.careLevel}
@@ -323,19 +325,19 @@ export default function FamilyPage() {
 
             <div className="glass p-4">
               <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-                Einrichtung
+                {t("family.facilityInfo")}
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-secondary">Name</span>
+                  <span className="text-sm text-text-secondary">{t("common.name")}</span>
                   <span className="text-sm font-medium text-text-primary">
-                    Seniorenheim Sonnenschein
+                    {t("settings.facilityName")}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-secondary">Adresse</span>
+                  <span className="text-sm text-text-secondary">{t("family.address")}</span>
                   <span className="text-sm font-medium text-text-primary">
-                    Musterstr. 42, Aachen
+                    {t("family.addressVal")}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -350,8 +352,7 @@ export default function FamilyPage() {
             <div className="glass p-4 flex items-center gap-3">
               <Shield size={18} className="text-accent shrink-0" />
               <p className="text-xs text-text-secondary leading-relaxed">
-                Alle Daten werden DSGVO-konform verarbeitet. Sie sehen nur die
-                fuer Angehoerige freigegebenen Informationen.
+                {t("family.gdprHint")}
               </p>
             </div>
           </div>
@@ -369,9 +370,9 @@ export default function FamilyPage() {
       >
         <div className="flex items-center justify-around h-[68px] px-2 pb-[env(safe-area-inset-bottom)]">
           {[
-            { icon: Heart, label: "Uebersicht", tab: "aktuell" as const },
-            { icon: Clock, label: "Aktivitaet", tab: "aktivitaet" as const },
-            { icon: MessageCircle, label: "Nachricht", tab: null },
+            { icon: Heart, label: t("family.overview"), tab: "aktuell" as const },
+            { icon: Clock, label: t("family.activity"), tab: "aktivitaet" as const },
+            { icon: MessageCircle, label: t("family.message"), tab: null },
           ].map((item, i) => (
             <button
               key={i}
@@ -414,7 +415,7 @@ export default function FamilyPage() {
           setMessageSent(false);
           setMessageText("");
         }}
-        title="Nachricht senden"
+        title={t("family.sendBtn")}
       >
         {messageSent ? (
           <div className="text-center py-6">
@@ -422,22 +423,21 @@ export default function FamilyPage() {
               <CheckCircle2 size={32} className="text-white" />
             </div>
             <h3 className="text-lg font-bold text-text-primary mb-1">
-              Nachricht gesendet!
+              {t("family.sent")}
             </h3>
             <p className="text-sm text-text-secondary">
-              Das Pflegeteam wird sich bei Ihnen melden.
+              {t("family.sentDesc")}
             </p>
           </div>
         ) : (
           <div>
             <p className="text-sm text-text-secondary mb-4">
-              Senden Sie eine Nachricht an das Pflegeteam von Seniorenheim
-              Sonnenschein.
+              {t("family.sendDesc")}
             </p>
             <textarea
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
-              placeholder="Ihre Nachricht..."
+              placeholder={t("family.placeholder")}
               rows={4}
               className="w-full rounded-2xl p-4 text-sm text-text-primary outline-none resize-none mb-4"
               style={{
@@ -451,7 +451,7 @@ export default function FamilyPage() {
               className="w-full flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98] disabled:opacity-40"
             >
               <Send size={16} />
-              Nachricht senden
+              {t("family.sendBtn")}
             </button>
           </div>
         )}
@@ -461,17 +461,17 @@ export default function FamilyPage() {
       <Modal
         open={showSettings}
         onClose={() => setShowSettings(false)}
-        title="Einstellungen"
+        title={t("settings.title")}
       >
         <div className="glass divide-y divide-border overflow-hidden mb-4">
           <div className="flex items-center gap-3 p-4">
             <Bell size={18} className="text-text-tertiary" />
             <div className="flex-1">
               <p className="text-sm font-medium text-text-primary">
-                Benachrichtigungen
+                {t("settings.notifications")}
               </p>
               <p className="text-xs text-text-tertiary">
-                Push-Nachrichten aktiv
+                {t("family.pushActive")}
               </p>
             </div>
             <ChevronRight size={16} className="text-text-tertiary" />
@@ -480,10 +480,10 @@ export default function FamilyPage() {
             <Shield size={18} className="text-text-tertiary" />
             <div className="flex-1">
               <p className="text-sm font-medium text-text-primary">
-                Datenschutz
+                {t("settings.privacy")}
               </p>
               <p className="text-xs text-text-tertiary">
-                DSGVO-konform
+                {t("settings.privacyDesc")}
               </p>
             </div>
             <ChevronRight size={16} className="text-text-tertiary" />
@@ -498,7 +498,7 @@ export default function FamilyPage() {
           className="w-full flex items-center justify-center gap-2 text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98] bg-danger-dim text-danger border border-danger/20"
         >
           <LogOut size={16} />
-          Abmelden
+          {t("settings.logout")}
         </button>
       </Modal>
     </div>

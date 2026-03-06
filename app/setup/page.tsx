@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 import {
   ArrowLeft,
   ArrowRight,
@@ -33,6 +34,7 @@ const sensorTypes = [
 
 export default function SetupPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [step, setStep] = useState(1);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [residentName, setResidentName] = useState("");
@@ -106,7 +108,7 @@ export default function SetupPage() {
         className="flex items-center gap-1.5 text-text-secondary text-sm mb-4 transition-colors active:text-text-primary"
       >
         <ArrowLeft size={18} />
-        {step > 1 ? "Zurueck" : "Abbrechen"}
+        {step > 1 ? t("common.back") : "Abbrechen"}
       </button>
 
       {/* Step indicator */}
@@ -139,10 +141,10 @@ export default function SetupPage() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-text-primary">
-                Zimmer waehlen
+                {t("setup.chooseRoom")}
               </h1>
               <p className="text-xs text-text-secondary mt-0.5">
-                Waehlen Sie das einzurichtende Zimmer
+                {t("setup.chooseRoomDesc")}
               </p>
             </div>
           </div>
@@ -206,10 +208,10 @@ export default function SetupPage() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-text-primary">
-                Bewohner zuordnen
+                {t("setup.assignResident")}
               </h1>
               <p className="text-xs text-text-secondary mt-0.5">
-                Stammdaten des Bewohners eingeben
+                {t("setup.assignResidentDesc")}
               </p>
             </div>
           </div>
@@ -217,7 +219,7 @@ export default function SetupPage() {
           <div className="space-y-4">
             <div>
               <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 block">
-                Name
+                {t("common.name")}
               </label>
               <input
                 type="text"
@@ -233,7 +235,7 @@ export default function SetupPage() {
             </div>
             <div>
               <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 block">
-                Alter
+                {t("common.age")}
               </label>
               <input
                 type="number"
@@ -249,7 +251,7 @@ export default function SetupPage() {
             </div>
             <div>
               <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 block">
-                Pflegegrad
+                {t("setup.careGrade")}
               </label>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((level) => (
@@ -290,10 +292,10 @@ export default function SetupPage() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-text-primary">
-                Sensoren scannen
+                {t("setup.scanSensors")}
               </h1>
               <p className="text-xs text-text-secondary mt-0.5">
-                QR-Codes der Sensoren scannen
+                {t("setup.scanSensorsDesc")}
               </p>
             </div>
           </div>
@@ -307,14 +309,14 @@ export default function SetupPage() {
                 <QrCode size={40} className="text-text-tertiary" />
               </div>
               <p className="text-sm text-text-secondary mb-6">
-                Halten Sie die Kamera auf den QR-Code des Sensors.
+                {t("setup.scanHint")}
               </p>
               <button
                 onClick={() => setScanning(true)}
                 className="mx-auto flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold px-8 py-3.5 rounded-2xl transition-all active:scale-[0.98]"
               >
                 <QrCode size={16} />
-                Scannen starten (Demo)
+                {t("setup.startScan")}
               </button>
             </div>
           )}
@@ -355,10 +357,10 @@ export default function SetupPage() {
                       </p>
                       <p className="text-xs text-text-tertiary">
                         {isScanned
-                          ? "Erkannt"
+                          ? t("setup.detected")
                           : isScanning
-                            ? "Wird gescannt..."
-                            : "Ausstehend"}
+                            ? t("setup.scanning")
+                            : t("setup.pendingScan")}
                       </p>
                     </div>
                     {isScanned && (
@@ -387,10 +389,10 @@ export default function SetupPage() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-text-primary">
-                Sensoren testen
+                {t("setup.testSensors")}
               </h1>
               <p className="text-xs text-text-secondary mt-0.5">
-                Verbindung und Funktion pruefen
+                {t("setup.testSensorsDesc")}
               </p>
             </div>
           </div>
@@ -401,7 +403,7 @@ export default function SetupPage() {
               className="w-full flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98] mb-5"
             >
               <Wifi size={16} />
-              Test starten
+              {t("setup.startTest")}
             </button>
           )}
 
@@ -439,10 +441,10 @@ export default function SetupPage() {
                     </p>
                     <p className="text-xs text-text-tertiary">
                       {tested
-                        ? "Verbunden & funktionsfaehig"
+                        ? t("setup.connected")
                         : isTesting
-                          ? "Wird getestet..."
-                          : "Ausstehend"}
+                          ? t("setup.testing")
+                          : t("setup.pendingScan")}
                     </p>
                   </div>
                   {tested && (
@@ -460,7 +462,7 @@ export default function SetupPage() {
             <div className="glass p-4 mt-4 flex items-center gap-3">
               <CheckCircle2 size={20} className="text-accent" />
               <p className="text-sm text-accent font-semibold">
-                Alle Sensoren erfolgreich getestet!
+                {t("setup.allTested")}
               </p>
             </div>
           )}
@@ -474,19 +476,19 @@ export default function SetupPage() {
             <CheckCircle2 size={40} className="text-white" />
           </div>
           <h1 className="text-2xl font-bold text-text-primary mb-2">
-            Einrichtung abgeschlossen!
+            {t("setup.complete")}
           </h1>
           <p className="text-sm text-text-secondary mb-2">
-            {availableRooms.find((r) => r.id === selectedRoom)?.name} wurde
-            erfolgreich eingerichtet.
+            {availableRooms.find((r) => r.id === selectedRoom)?.name}{" "}
+            {t("setup.successMsg")}
           </p>
           <p className="text-sm text-text-secondary mb-8">
-            {residentName} ({residentAge} J., Pflegegrad {careLevel})
+            {residentName} ({residentAge} J., {t("setup.careGrade")} {careLevel})
           </p>
 
           <div className="glass p-4 text-left mb-6">
             <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
-              Zusammenfassung
+              {t("setup.summary")}
             </h3>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -504,7 +506,7 @@ export default function SetupPage() {
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Sensoren</span>
                 <span className="text-accent font-medium">
-                  {sensorTypes.length} installiert
+                  {sensorTypes.length} {t("setup.installed")}
                 </span>
               </div>
             </div>
@@ -514,7 +516,7 @@ export default function SetupPage() {
             onClick={() => router.push("/")}
             className="w-full flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.98]"
           >
-            Zum Dashboard
+            {t("setup.toDashboard")}
             <ArrowRight size={16} />
           </button>
         </div>
@@ -528,7 +530,7 @@ export default function SetupPage() {
           className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-[398px] flex items-center justify-center gap-2 bg-accent text-white text-sm font-semibold py-4 rounded-2xl transition-all active:scale-[0.98] disabled:opacity-40 z-30"
           style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
         >
-          Weiter
+          {t("common.next")}
           <ArrowRight size={16} />
         </button>
       )}
