@@ -13,6 +13,7 @@ import {
   Map,
   FileBarChart,
 } from "lucide-react";
+import DashboardFloorPlan from "./components/DashboardFloorPlan";
 
 export default function Dashboard() {
   const criticalRooms = rooms.filter((r) => r.status === "alarm");
@@ -97,6 +98,9 @@ export default function Dashboard() {
           </div>
         </Link>
       )}
+
+      {/* Floor Plan Overview */}
+      <DashboardFloorPlan />
 
       {/* Quick Stats */}
       <div className="grid grid-cols-4 gap-2 mb-6">
